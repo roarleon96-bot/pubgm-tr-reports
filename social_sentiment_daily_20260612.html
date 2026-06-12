@@ -105,11 +105,14 @@ header .source { color: var(--text-dim); font-size: 11px; margin-top: 4px; }
     font-size: 12px; font-weight: 600; white-space: nowrap;
 }
 .vp-summary { font-weight: 600; color: #e8e8e8; max-width: 280px; word-break: break-word; line-height: 1.5; }
-.quote-cell { max-width: 250px; word-break: break-word; line-height: 1.4; color: var(--text-dim); font-size: 12px; }
+.quote-cell { max-width: 300px; word-break: break-word; line-height: 1.4; color: var(--text-dim); font-size: 12px; }
 .quote-cell a { color: var(--text-dim); text-decoration: none; border-bottom: 1px dashed var(--accent); transition: color .2s; }
 .quote-cell a:hover { color: var(--accent); border-bottom-style: solid; }
 .quote-author { color: var(--accent); font-weight: 600; font-size: 10px; margin-right: 4px; }
 .count-cell { text-align: center; font-weight: 700; font-size: 15px; }
+.general-samples { display: flex; flex-direction: column; gap: 5px; }
+.general-sample-item { padding: 3px 0; border-bottom: 1px dotted var(--border); font-size: 11px; line-height: 1.5; }
+.general-sample-item:last-child { border-bottom: none; }
 
 /* IP table specific */
 .ip-table .count-cell { min-width: 50px; }
@@ -239,7 +242,7 @@ footer {
   <div class="stat-card">
     <div class="label">24h评论 (24h)</div>
     <div class="value" style="color: var(--accent);">591</div>
-    <div class="sub">7d评论: 591</div>
+    <div class="sub">7d评论: 1321</div>
   </div>
   <div class="stat-card"><div class="label">📱 TikTok</div><div class="value" style="color:#ff0050">426</div><div class="sub">占比 72.1%</div></div>
   <div class="stat-card"><div class="label">📸 Instagram</div><div class="value" style="color:#E4405F">165</div><div class="sub">占比 27.9%</div></div>
@@ -665,51 +668,51 @@ ben:sen kime öldiyoron🤬🤬😡😡🤬 …</a></td>
 <!-- ===== 4. TOP IP/TOPICS ===== -->
 <div class="section">
   <div class="section-title">4️⃣ 🎭 分IP总览</div>
-  <div class="section-subtitle">今日最热5个话题/IP（24h vs 7d 热度对比）</div>
+  <div class="section-subtitle">今日最热5个话题/IP（24h vs 历史对比）</div>
   <div class="chart-legend">
     <span><div class="swatch" style="background:var(--accent)"></div> 首日(24h)</span>
-    <span><div class="swatch" style="background:var(--accent);opacity:0.5"></div> 近7日</span>
+    <span><div class="swatch" style="background:var(--accent);opacity:0.5"></div> 历史均值（1天数据）</span>
   </div>
   <div class="comp-chart">
     <div class="comp-row">
       <span class="comp-label">🍥 NARUTO联动</span>
       <div class="comp-bars">
-        <div class="comp-bar day1" style="width:100%;background:#ff9f43"><span>38</span></div>
-        <div class="comp-bar day7" style="width:100%;background:#ff9f43;opacity:0.5"><span>38</span></div>
+        <div class="comp-bar day1" style="width:10%;background:#ff9f43"><span>38</span></div>
+        <div class="comp-bar day7" style="width:100%;background:#ff9f43;opacity:0.5"><span>371.0</span></div>
       </div>
-      <span class="heat-badge">📈 热度上升</span>
+      <span class="heat-badge">📉 热度下降</span>
     </div>
     <div class="comp-row">
       <span class="comp-label">⚽ 蓝色监狱联动</span>
       <div class="comp-bars">
-        <div class="comp-bar day1" style="width:47%;background:#3498db"><span>18</span></div>
-        <div class="comp-bar day7" style="width:47%;background:#3498db;opacity:0.5"><span>18</span></div>
+        <div class="comp-bar day1" style="width:5%;background:#3498db"><span>18</span></div>
+        <div class="comp-bar day7" style="width:11%;background:#3498db;opacity:0.5"><span>41.0</span></div>
       </div>
-      <span class="heat-badge">📈 热度上升</span>
+      <span class="heat-badge">📉 热度下降</span>
     </div>
     <div class="comp-row">
       <span class="comp-label">⚽ 足球国家队</span>
       <div class="comp-bars">
-        <div class="comp-bar day1" style="width:32%;background:#2a9d8f"><span>12</span></div>
-        <div class="comp-bar day7" style="width:32%;background:#2a9d8f;opacity:0.5"><span>12</span></div>
+        <div class="comp-bar day1" style="width:3%;background:#2a9d8f"><span>12</span></div>
+        <div class="comp-bar day7" style="width:4%;background:#2a9d8f;opacity:0.5"><span>16.0</span></div>
       </div>
-      <span class="heat-badge">📈 热度上升</span>
+      <span class="heat-badge">➡️ 热度稳定</span>
     </div>
     <div class="comp-row">
       <span class="comp-label">🕷️ 蜘蛛侠联动</span>
       <div class="comp-bars">
-        <div class="comp-bar day1" style="width:3%;background:#e74c3c"><span>1</span></div>
-        <div class="comp-bar day7" style="width:3%;background:#e74c3c;opacity:0.5"><span>1</span></div>
+        <div class="comp-bar day1" style="width:0%;background:#e74c3c"><span>1</span></div>
+        <div class="comp-bar day7" style="width:1%;background:#e74c3c;opacity:0.5"><span>3.0</span></div>
       </div>
-      <span class="heat-badge">📈 热度上升</span>
+      <span class="heat-badge">📉 热度下降</span>
     </div>
     <div class="comp-row">
       <span class="comp-label">🏎️ 法拉利联动</span>
       <div class="comp-bars">
-        <div class="comp-bar day1" style="width:3%;background:#dc143c"><span>1</span></div>
-        <div class="comp-bar day7" style="width:3%;background:#dc143c;opacity:0.5"><span>1</span></div>
+        <div class="comp-bar day1" style="width:0%;background:#dc143c"><span>1</span></div>
+        <div class="comp-bar day7" style="width:1%;background:#dc143c;opacity:0.5"><span>2.0</span></div>
       </div>
-      <span class="heat-badge">📈 热度上升</span>
+      <span class="heat-badge">📉 热度下降</span>
     </div>
   </div>
   <table class="vp-table ip-table">
@@ -718,61 +721,96 @@ ben:sen kime öldiyoron🤬🤬😡😡🤬 …</a></td>
         <th>话题</th>
         <th>核心观点</th>
         <th>原文参考</th>
-        <th>24h</th>
-        <th>7d</th>
+        <th>今日(24h)</th>
+        <th>历史均值</th>
       </tr>
     </thead>
     <tbody>
     <tr>
       <td><span class="topic-badge" style="background:#ff9f4322;color:#ff9f43;border:1px solid #ff9f4344">🍥 NARUTO联动</span></td>
-      <td class="vp-summary">鸣人、斑、佐助皮肤/忍术帅气还原，玩家喜欢</td>
-      <td class="quote-cell"><a href="https://www.instagram.com/pubgmobile_tr/reel/DZad9TWkaoY/" target="_blank" rel="noopener"><span class="quote-author">@热门</span> pubgmobile_tr 原创音频 已关注 pubgmobile_tr Geri çekileceğimi mi sanıyorsun? Asla. Ne o…</a></td>
-      <td class="count-cell">23</td>
-      <td class="count-cell">23 📈 热度上升</td>
+      <td class="vp-summary">鸣人、宇智波鼬、小樱联动相关讨论</td>
+      <td class="quote-cell"><div class="general-samples"><div class="general-sample-item">· <a href="https://www.tiktok.com/@pubgmobile_tur/video/7649818377036270855" target="_blank" rel="noopener"><span class="quote-author">@yujigojo31tr</span> [贴纸] En iyisi jujutsu kaisen oldu ama yuji yok bide attack on titan ehh yani
+Çok…</a></div><div class="general-sample-item">· <a href="https://www.instagram.com/pubgmobile_tr/reel/DZad9TWkaoY/" target="_blank" rel="noopener"><span class="quote-author">@oguzaltaysari5</span> Bişey soracağım bu şimdi sadece kostüm olarak mı gelcek yoksa battle royale bunu…</a></div><div class="general-sample-item">· <a href="https://www.tiktok.com/@pubgmobile_tur/video/7649818377036270855" target="_blank" rel="noopener"><span class="quote-author">@major7pm</span> naruto naruto shippuden bitirmiş biriyim yani 1 yıldır bekliyordum kesinlikle he…</a></div><div class="general-sample-item">· <a href="https://www.tiktok.com/@pubgmobile_tur/video/7649395742179872020" target="_blank" rel="noopener"><span class="quote-author">@inci_015</span> gelse de hemen oynasak çok heyecanlıyım ilk ve en sevdiğim anime ya</a></div><div class="general-sample-item">· <a href="https://www.instagram.com/pubgmobile_tr/reel/DZad9TWkaoY/" target="_blank" rel="noopener"><span class="quote-author">@megumipubgmobile</span> Sasuke Naruto sakura kakashi gelir büyük ihtamelle</a></div></div></td>
+      <td class="count-cell">13</td>
+      <td class="count-cell">242 📉 热度下降</td>
     </tr>
     <tr>
       <td><span class="topic-badge" style="background:#ff9f4322;color:#ff9f43;border:1px solid #ff9f4344">🍥 NARUTO联动</span></td>
-      <td class="vp-summary">鸣人、宇智波鼬、小樱联动相关讨论</td>
-      <td class="quote-cell"><a href="https://www.tiktok.com/@pubgmobile_tur/video/7649818377036270855" target="_blank" rel="noopener"><span class="quote-author">@yujigojo31tr</span> [贴纸] En iyisi jujutsu kaisen oldu ama yuji yok bide attack on titan ehh yani
-Çok…</a></td>
-      <td class="count-cell">13</td>
-      <td class="count-cell">13 📈 热度上升</td>
+      <td class="vp-summary">鸣人、斑、佐助皮肤/忍术帅气还原，玩家喜欢</td>
+      <td class="quote-cell"><a href="https://www.instagram.com/pubgmobile_tr/reel/DZad9TWkaoY/" target="_blank" rel="noopener"><span class="quote-author">@热门</span> pubgmobile_tr 原创音频 已关注 pubgmobile_tr Geri çekileceğimi mi sanıyorsun? Asla. Ne o…</a></td>
+      <td class="count-cell">23</td>
+      <td class="count-cell">64 📉 热度下降</td>
     </tr>
     <tr>
       <td><span class="topic-badge" style="background:#ff9f4322;color:#ff9f43;border:1px solid #ff9f4344">🍥 NARUTO联动</span></td>
       <td class="vp-summary">卡卡西、晓组织、鸣人皮肤定价过高，觉得不值</td>
       <td class="quote-cell"><a href="https://www.tiktok.com/@pubgmobile_tur/video/7649818377036270855" target="_blank" rel="noopener"><span class="quote-author">@marselcii1</span> Ödül yoluna uchiha madara gelsin kutulara akatsuki hashirama Naruto falan gelsin…</a></td>
       <td class="count-cell">2</td>
-      <td class="count-cell">2 📈 热度上升</td>
+      <td class="count-cell">8 📉 热度下降</td>
+    </tr>
+    <tr>
+      <td><span class="topic-badge" style="background:#ff9f4322;color:#ff9f43;border:1px solid #ff9f4344">🍥 NARUTO联动</span></td>
+      <td class="vp-summary">螺旋丸、千鸟联动与其他IP对比</td>
+      <td class="quote-cell"><a href="https://www.instagram.com/pubgmobile_tr/reel/DZXv5ciDJGH/" target="_blank" rel="noopener"><span class="quote-author">@wh1te_1chigo</span> Rasengan ve Chidori işlevsiz olur çünki bu oyun yakın dövüş oyunu değil, Edo ten…</a></td>
+      <td class="count-cell">0</td>
+      <td class="count-cell">2</td>
     </tr>
     <tr>
       <td><span class="topic-badge" style="background:#3498db22;color:#3498db;border:1px solid #3498db44">⚽ 蓝色监狱联动</span></td>
       <td class="vp-summary">糸师凛联动相关讨论</td>
-      <td class="quote-cell"><a href="https://www.instagram.com/pubgmobile_tr/reel/DZad9TWkaoY/" target="_blank" rel="noopener"><span class="quote-author">@4hmxt.t</span> 1 天 · 已编辑 göz bandini ag a yada malzeme sandigina tekrar getirin!!…</a></td>
+      <td class="quote-cell"><div class="general-samples"><div class="general-sample-item">· <a href="https://www.instagram.com/pubgmobile_tr/reel/DZad9TWkaoY/" target="_blank" rel="noopener"><span class="quote-author">@4hmxt.t</span> 1 天 · 已编辑 göz bandini ag a yada malzeme sandigina tekrar getirin!!</a></div><div class="general-sample-item">· <a href="https://www.tiktok.com/@pubgmobile_tur/video/7650122704607087893" target="_blank" rel="noopener"><span class="quote-author">@qharayhev</span> Gece saat 3 yatmak yerine bu videoyu izliyorum yine dogru karar</a></div><div class="general-sample-item">· <a href="https://www.instagram.com/pubgmobile_tr/reel/DZaHHKoCbtf/" target="_blank" rel="noopener"><span class="quote-author">@narutosab_trade</span> Türkiye formasını getirin lütfen geçen geldi alamadım</a></div><div class="general-sample-item">· <a href="https://www.tiktok.com/@pubgmobile_tur/video/7649720599408954644" target="_blank" rel="noopener"><span class="quote-author">@spinxfettahh3</span> pubg Mobile Türkiye povnin modunu tekrar getirin</a></div><div class="general-sample-item">· <a href="https://www.tiktok.com/@pubgmobile_tur/video/7649745047734226197" target="_blank" rel="noopener"><span class="quote-author">@ataturkcuyuz.ahmet</span> artık sarı saçı getirin ömrümüz bitti aq</a></div></div></td>
       <td class="count-cell">12</td>
-      <td class="count-cell">12 📈 热度上升</td>
+      <td class="count-cell">27 📉 热度下降</td>
     </tr>
     <tr>
       <td><span class="topic-badge" style="background:#3498db22;color:#3498db;border:1px solid #3498db44">⚽ 蓝色监狱联动</span></td>
       <td class="vp-summary">蓝色监狱联动皮肤获好评</td>
       <td class="quote-cell"><a href="https://www.instagram.com/pubgmobile_tr/reel/DZaUyeoCcFH/" target="_blank" rel="noopener"><span class="quote-author">@热门</span> pubgmobile_tr 原创音频 已关注 pubgmobile_tr Gökyüzünün en parlak iki yıldızı, oyun alan…</a></td>
       <td class="count-cell">4</td>
-      <td class="count-cell">4 📈 热度上升</td>
+      <td class="count-cell">8 📉 热度下降</td>
+    </tr>
+    <tr>
+      <td><span class="topic-badge" style="background:#3498db22;color:#3498db;border:1px solid #3498db44">⚽ 蓝色监狱联动</span></td>
+      <td class="vp-summary">糸师凛定价过高</td>
+      <td class="quote-cell"><a href="https://www.tiktok.com/@pubgmobile_tur/video/7649720599408954644" target="_blank" rel="noopener"><span class="quote-author">@pupg.woxi</span> [贴纸] bana rp vermesen yerine koymam😁…</a></td>
+      <td class="count-cell">1</td>
+      <td class="count-cell">2 📉 热度下降</td>
     </tr>
     <tr>
       <td><span class="topic-badge" style="background:#2a9d8f22;color:#2a9d8f;border:1px solid #2a9d8f44">⚽ 足球国家队</span></td>
       <td class="vp-summary">葡萄牙、球衣球衣外观获好评</td>
       <td class="quote-cell"><a href="https://www.instagram.com/pubgmobile_tr/reel/DZaHHKoCbtf/" target="_blank" rel="noopener"><span class="quote-author">@热门</span> pubgmobile_tr 原创音频 已关注 pubgmobile_tr Büyük mücadele, efsane formalar! 🌎⚽ PUBG MO…</a></td>
       <td class="count-cell">9</td>
-      <td class="count-cell">9 📈 热度上升</td>
+      <td class="count-cell">11 ➡️ 热度稳定</td>
     </tr>
     <tr>
       <td><span class="topic-badge" style="background:#2a9d8f22;color:#2a9d8f;border:1px solid #2a9d8f44">⚽ 足球国家队</span></td>
       <td class="vp-summary">C罗、阿根廷相关讨论</td>
-      <td class="quote-cell"><a href="https://www.tiktok.com/@pubgmobile_tur/video/7650176403605867797" target="_blank" rel="noopener"><span class="quote-author">@bozanotherlevel</span> ben paçi idnridim ronaldo geldi ben i öldürü o sıra
-ben:sen kime öldiyoron🤬🤬😡😡🤬 …</a></td>
+      <td class="quote-cell"><div class="general-samples"><div class="general-sample-item">· <a href="https://www.tiktok.com/@pubgmobile_tur/video/7650176403605867797" target="_blank" rel="noopener"><span class="quote-author">@bozanotherlevel</span> ben paçi idnridim ronaldo geldi ben i öldürü o sıra
+ben:sen kime öldiyoron🤬🤬😡😡🤬 …</a></div><div class="general-sample-item">· <a href="https://www.tiktok.com/@pubgmobile_tur/video/7649745047734226197" target="_blank" rel="noopener"><span class="quote-author">@ismayilov_24_2009</span> məndə Argentinanın forması baqa girib şortun rəngi bozdu</a></div><div class="general-sample-item">· <a href="https://www.instagram.com/pubgmobile_tr/reel/DZaHHKoCbtf/" target="_blank" rel="noopener"><span class="quote-author">@muzoo_o1</span> Uzbekistan 🇺🇿</a></div></div></td>
       <td class="count-cell">3</td>
-      <td class="count-cell">3 📈 热度上升</td>
+      <td class="count-cell">3 ➡️ 热度稳定</td>
+    </tr>
+    <tr>
+      <td><span class="topic-badge" style="background:#2a9d8f22;color:#2a9d8f;border:1px solid #2a9d8f44">⚽ 足球国家队</span></td>
+      <td class="vp-summary">葡萄牙球衣引发球迷期待</td>
+      <td class="quote-cell"><a href="https://www.instagram.com/pubgmobile_tr/p/DZXhIX1loXm/" target="_blank" rel="noopener"><span class="quote-author">@热门</span> pubgmobile_tr 已关注 pubgmobile_tr ⚽ FUTBOL TEMALI WOW ETKİNLİĞİ BAŞLADI! ⚽ Oynayın…</a></td>
+      <td class="count-cell">0</td>
+      <td class="count-cell">2</td>
+    </tr>
+    <tr>
+      <td><span class="topic-badge" style="background:#e74c3c22;color:#e74c3c;border:1px solid #e74c3c44">🕷️ 蜘蛛侠联动</span></td>
+      <td class="vp-summary">蜘蛛侠联动皮肤/特效获好评</td>
+      <td class="quote-cell"><a href="https://www.tiktok.com/@pubgmobile_tur/video/7649818377036270855" target="_blank" rel="noopener"><span class="quote-author">@habipdurmus_13</span> admin Spiderman getirmezsen silicez artık aw…</a></td>
+      <td class="count-cell">1</td>
+      <td class="count-cell">3 📉 热度下降</td>
+    </tr>
+    <tr>
+      <td><span class="topic-badge" style="background:#dc143c22;color:#dc143c;border:1px solid #dc143c44">🏎️ 法拉利联动</span></td>
+      <td class="vp-summary">法拉利联动相关讨论</td>
+      <td class="quote-cell"><div class="general-samples"><div class="general-sample-item">· <a href="https://www.instagram.com/pubgmobile_tr/reel/DZad9TWkaoY/" target="_blank" rel="noopener"><span class="quote-author">@dearahm01</span> Admin ferrarileri tanıtın laaaa</a></div></div></td>
+      <td class="count-cell">1</td>
+      <td class="count-cell">2 📉 热度下降</td>
     </tr>
     </tbody>
   </table>
@@ -792,14 +830,14 @@ ben:sen kime öldiyoron🤬🤬😡😡🤬 …</a></td>
     </div>
     <div class="summary-block">
       <h4>💡 业务建议</h4>
-      <p class="rec-item">🔥 **NARUTO联动** 今日热度飙升（24h=38, 7d日均=5.4），建议加大社媒曝光投入</p><p class="rec-item">🔥 **蓝色监狱联动** 今日热度飙升（24h=18, 7d日均=2.6），建议加大社媒曝光投入</p><p class="rec-item">🔥 **足球国家队** 今日热度飙升（24h=12, 7d日均=1.7），建议加大社媒曝光投入</p>
+      <p class="rec-item">📌 **NARUTO联动** 持续高热度（24h=38条），可规划后续联动内容</p><p class="rec-item">🔥 **蓝色监狱联动** 今日热度飙升（24h=18, 7d日均=5.9），建议加大社媒曝光投入</p><p class="rec-item">🔥 **足球国家队** 今日热度飙升（24h=12, 7d日均=2.3），建议加大社媒曝光投入</p>
     </div>
     <p style="color:var(--text-dim);font-size:12px;margin-top:12px;">📋 补充频次: 🤖 疑似水军 23 | 🎁 乞讨UC/ID 2 | 💰 UC消费讨论 37</p>
   </div>
 </div>
 
 <footer>
-  数据采集时间：2026-06-12 09:24:53 CST<br>
+  数据采集时间：2026-06-12 09:33:18 CST<br>
   覆盖平台：📱 TikTok, 📸 Instagram<br>
   Sprout Social Smart Inbox + Playwright 自动采集 | Rocky 🪨
 </footer>
