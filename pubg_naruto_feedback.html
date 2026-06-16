@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PUBG Mobile × 火影忍者 联动玩家反馈分析</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #222535;
+      --border: #2e3147;
+      --text: #e8eaf0;
+      --text-muted: #7b7f96;
+      --positive: #4ade80;
+      --positive-bg: #0d2818;
+      --positive-border: #166534;
+      --negative: #f87171;
+      --negative-bg: #2d0e0e;
+      --negative-border: #7f1d1d;
+      --neutral: #60a5fa;
+      --neutral-bg: #0d1f3c;
+      --neutral-border: #1e3a5f;
+      --accent: #f97316;
+      --accent2: #818cf8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #1a0a2e 0%, #0f1117 50%, #1a0d08 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 0 36px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 50%, rgba(249,115,22,0.08) 0%, transparent 60%),
+                  radial-gradient(ellipse at 70% 50%, rgba(129,140,248,0.08) 0%, transparent 60%);
+    }
+    .header-tag {
+      display: inline-block;
+      background: rgba(249,115,22,0.15);
+      border: 1px solid rgba(249,115,22,0.3);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+    .header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      position: relative;
+    }
+    .header h1 span {
+      color: var(--accent);
+    }
+    .header-sub {
+      margin-top: 8px;
+      color: var(--text-muted);
+      font-size: 14px;
+      position: relative;
+    }
+    .header-meta {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      font-size: 13px;
+      color: var(--text-muted);
+      position: relative;
+    }
+    .header-meta span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
+
+    /* Container */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* Summary */
+    .summary-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 32px;
+      font-size: 15px;
+      color: #c8ccd8;
+      line-height: 1.8;
+      border-left: 3px solid var(--accent);
+    }
+    .summary-card strong { color: var(--text); }
+
+    /* Stats Row */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 22px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .stat-card.pos::before { background: var(--positive); }
+    .stat-card.neg::before { background: var(--negative); }
+    .stat-card.neu::before { background: var(--neutral); }
+
+    .stat-number {
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-card.pos .stat-number { color: var(--positive); }
+    .stat-card.neg .stat-number { color: var(--negative); }
+    .stat-card.neu .stat-number { color: var(--neutral); }
+
+    .stat-label { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+    .stat-pct {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    .stat-card.pos .stat-pct { background: var(--positive-bg); color: var(--positive); border: 1px solid var(--positive-border); }
+    .stat-card.neg .stat-pct { background: var(--negative-bg); color: var(--negative); border: 1px solid var(--negative-border); }
+    .stat-card.neu .stat-pct { background: var(--neutral-bg); color: var(--neutral); border: 1px solid var(--neutral-border); }
+
+    /* Bar chart */
+    .bar-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 36px;
+    }
+    .bar-section h3 {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .bar-row:last-child { margin-bottom: 0; }
+    .bar-label { font-size: 13px; color: var(--text); width: 60px; text-align: right; flex-shrink: 0; }
+    .bar-track {
+      flex: 1;
+      background: var(--surface2);
+      border-radius: 4px;
+      height: 10px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.6s ease;
+    }
+    .bar-fill.pos { background: var(--positive); }
+    .bar-fill.neg { background: var(--negative); }
+    .bar-fill.neu { background: var(--neutral); }
+    .bar-count { font-size: 13px; color: var(--text-muted); width: 70px; flex-shrink: 0; }
+
+    /* Section */
+    .section { margin-bottom: 36px; }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .section-badge.pos { background: var(--positive-bg); color: var(--positive); border: 1px solid var(--positive-border); }
+    .section-badge.neg { background: var(--negative-bg); color: var(--negative); border: 1px solid var(--negative-border); }
+    .section-badge.neu { background: var(--neutral-bg); color: var(--neutral); border: 1px solid var(--neutral-border); }
+    .section-total {
+      margin-left: auto;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .section-total strong { color: var(--text); }
+
+    /* Feedback items */
+    .feedback-list { display: flex; flex-direction: column; gap: 10px; }
+    .feedback-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      transition: border-color 0.2s;
+    }
+    .feedback-item:hover { border-color: #3e4260; }
+    .rank-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .pos .rank-num { background: var(--positive-bg); color: var(--positive); border: 1px solid var(--positive-border); }
+    .neg .rank-num { background: var(--negative-bg); color: var(--negative); border: 1px solid var(--negative-border); }
+    .neu .rank-num { background: var(--neutral-bg); color: var(--neutral); border: 1px solid var(--neutral-border); }
+
+    .feedback-content { flex: 1; }
+    .feedback-text { font-size: 14px; color: #c8ccd8; line-height: 1.6; }
+    .feedback-bar {
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .feedback-bar-track {
+      flex: 1;
+      height: 4px;
+      background: var(--surface2);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .feedback-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+    }
+    .pos .feedback-bar-fill { background: var(--positive); }
+    .neg .feedback-bar-fill { background: var(--negative); }
+    .neu .feedback-bar-fill { background: var(--neutral); }
+    .feedback-count {
+      font-size: 12px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .pos .feedback-count { color: var(--positive); }
+    .neg .feedback-count { color: var(--negative); }
+    .neu .feedback-count { color: var(--neutral); }
+
+    /* Insight */
+    .insight-section {
+      background: linear-gradient(135deg, #1a1228 0%, #0f1117 100%);
+      border: 1px solid #3b2f5e;
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 36px;
+    }
+    .insight-section h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent2);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .insight-list { display: flex; flex-direction: column; gap: 10px; }
+    .insight-item {
+      display: flex;
+      gap: 10px;
+      font-size: 13.5px;
+      color: #b0b5d0;
+      line-height: 1.6;
+    }
+    .insight-dot { color: var(--accent2); flex-shrink: 0; margin-top: 2px; }
+
+    /* Top skills */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .skill-rank {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--surface2);
+      width: 28px;
+      flex-shrink: 0;
+    }
+    .skill-rank.top1 { color: #f59e0b; }
+    .skill-rank.top2 { color: #94a3b8; }
+    .skill-rank.top3 { color: #cd7c3c; }
+    .skill-info { flex: 1; }
+    .skill-name { font-size: 14px; font-weight: 600; color: var(--text); }
+    .skill-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .skill-pref {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(249,115,22,0.1);
+      color: var(--accent);
+      border: 1px solid rgba(249,115,22,0.2);
+      flex-shrink: 0;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 32px 24px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .stats-row { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .header h1 { font-size: 22px; }
+      .stat-number { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-tag">玩家反馈分析报告</div>
+  <h1>PUBG Mobile × <span>火影忍者</span> 联动</h1>
+  <p class="header-sub">基于 PUBG Mobile 社媒评论区数据（TikTok + Instagram，约 2,183 条评论）</p>
+  <div class="header-meta">
+    <span><span class="dot"></span> 数据来源：PUBG Mobile 社媒评论区</span>
+    <span><span class="dot"></span> 平台：TikTok · Instagram</span>
+    <span><span class="dot"></span> 主要用户群：土耳其语玩家</span>
+    <span><span class="dot"></span> 分析时间：2026年6月</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 总结 -->
+  <div class="summary-card">
+    整体来看，玩家对 PUBG Mobile × 火影忍者联动关注度较高，讨论以<strong>技能体验和角色认同</strong>为主。负面反馈主要集中在对游戏<strong>频繁动漫化的审美疲劳</strong>，而非对火影 IP 本身的抵触；正向反馈高度聚焦于<strong>飞雷神传送技能</strong>带来的惊喜体验；玩家后续最期待<strong>宇智波家族完整阵容</strong>上线及配套的 X-Suit 皮肤与奖励路线。
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card pos">
+      <div class="stat-number">~590</div>
+      <div class="stat-label">正面反馈</div>
+      <span class="stat-pct">▲ 27%</span>
+    </div>
+    <div class="stat-card neg">
+      <div class="stat-number">~1055</div>
+      <div class="stat-label">负面反馈</div>
+      <span class="stat-pct">▼ 48%</span>
+    </div>
+    <div class="stat-card neu">
+      <div class="stat-number">~538</div>
+      <div class="stat-label">中性反馈</div>
+      <span class="stat-pct">— 25%</span>
+    </div>
+  </div>
+
+  <!-- Bar chart -->
+  <div class="bar-section">
+    <h3>情感分布概览</h3>
+    <div class="bar-row">
+      <div class="bar-label">正面</div>
+      <div class="bar-track"><div class="bar-fill pos" style="width:28%"></div></div>
+      <div class="bar-count">约 590 条 · 27%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">负面</div>
+      <div class="bar-track"><div class="bar-fill neg" style="width:48%"></div></div>
+      <div class="bar-count">约 1055 条 · 48%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">中性</div>
+      <div class="bar-track"><div class="bar-fill neu" style="width:25%"></div></div>
+      <div class="bar-count">约 538 条 · 25%</div>
+    </div>
+  </div>
+
+  <!-- 玩家最爱技能 -->
+  <div class="section">
+    <div class="section-header">
+      <span style="font-size:14px;font-weight:700;color:var(--accent);">⚡ 玩家最喜爱的联动内容</span>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-rank top1">1</div>
+        <div class="skill-info">
+          <div class="skill-name">飞雷神传送术</div>
+          <div class="skill-desc">Minato 瞬移技能，讨论量最高</div>
+        </div>
+        <span class="skill-pref">最受欢迎</span>
+      </div>
+      <div class="skill-card">
+        <div class="skill-rank top2">2</div>
+        <div class="skill-info">
+          <div class="skill-name">千鸟</div>
+          <div class="skill-desc">雷遁近战技能特效受好评</div>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-rank top3">3</div>
+        <div class="skill-info">
+          <div class="skill-name">螺旋丸</div>
+          <div class="skill-desc">标志性远程技能</div>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-rank">4</div>
+        <div class="skill-info">
+          <div class="skill-name">影分身术</div>
+          <div class="skill-desc">多分身机制引发讨论</div>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-rank">5</div>
+        <div class="skill-info">
+          <div class="skill-name">高速奔跑</div>
+          <div class="skill-desc">忍者奔跑姿势获得正向反应</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 玩家最期待内容 -->
+  <div class="section">
+    <div class="section-header">
+      <span style="font-size:14px;font-weight:700;color:#a78bfa;">★ 玩家最期待的内容</span>
+    </div>
+
+    <!-- 期待游戏内容 -->
+    <div class="feedback-list">
+      <div class="feedback-item" style="border-color:rgba(167,139,250,0.25);">
+        <div class="rank-num" style="background:rgba(167,139,250,0.1);color:#a78bfa;border:1px solid rgba(167,139,250,0.3);">1</div>
+        <div class="feedback-content">
+          <div class="feedback-text">专属火影模式 / 地图——玩家最在意"火影模式"品质，是讨论绝对热点</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:100%;background:#a78bfa;"></div></div>
+            <span class="feedback-count" style="color:#a78bfa;">281 条</span>
+          </div>
+        </div>
+      </div>
+      <div class="feedback-item" style="border-color:rgba(167,139,250,0.25);">
+        <div class="rank-num" style="background:rgba(167,139,250,0.1);color:#a78bfa;border:1px solid rgba(167,139,250,0.3);">2</div>
+        <div class="feedback-content">
+          <div class="feedback-text">奖励路线 / 活动内容——专门期待 Obito × Madara 奖励路线，以及免费赠送活动</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:14%;background:#a78bfa;"></div></div>
+            <span class="feedback-count" style="color:#a78bfa;">38 条</span>
+          </div>
+        </div>
+      </div>
+      <div class="feedback-item" style="border-color:rgba(167,139,250,0.25);">
+        <div class="rank-num" style="background:rgba(167,139,250,0.1);color:#a78bfa;border:1px solid rgba(167,139,250,0.3);">3</div>
+        <div class="feedback-content">
+          <div class="feedback-text">写轮眼 / 须佐能乎技能——多条评论表示"如果来写轮眼技能就下载/玩"，是关键拉新钩子</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:7%;background:#a78bfa;"></div></div>
+            <span class="feedback-count" style="color:#a78bfa;">2 条期望</span>
+          </div>
+        </div>
+      </div>
+      <div class="feedback-item" style="border-color:rgba(167,139,250,0.25);">
+        <div class="rank-num" style="background:rgba(167,139,250,0.1);color:#a78bfa;border:1px solid rgba(167,139,250,0.3);">4</div>
+        <div class="feedback-content">
+          <div class="feedback-text">X-Suit 联名皮肤 / 服装——多人提到"服装来就行，技能没做好"，皮肤优先级高于技能</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:6%;background:#a78bfa;"></div></div>
+            <span class="feedback-count" style="color:#a78bfa;">17 条</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 正面反馈 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-badge pos">✦ 正面反馈</div>
+      <span class="section-total">共约 <strong>590</strong> 条 · 占比 27%</span>
+    </div>
+    <div class="feedback-list">
+      <div class="feedback-item pos">
+        <div class="rank-num pos">1</div>
+        <div class="feedback-content">
+          <div class="feedback-text">玩家通过爱心、火焰等表情及 perfect、love it、cok iyi 等词汇直接表达喜爱</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:100%"></div></div>
+            <span class="feedback-count">约 215 条</span>
+          </div>
+        </div>
+      </div>
+      <div class="feedback-item pos">
+        <div class="rank-num pos">2</div>
+        <div class="feedback-content">
+          <div class="feedback-text">对飞雷神传送技能体验的赞美和兴奋，认为这是最惊艳的联动设计（"用这个传送技能能赢"）</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:67%"></div></div>
+            <span class="feedback-count">约 145 条</span>
+          </div>
+        </div>
+      </div>
+      <div class="feedback-item pos">
+        <div class="rank-num pos">3</div>
+        <div class="feedback-content">
+          <div class="feedback-text">作为火影原著粉对联动感到惊喜，Instagram 用户中大量原著粉对技能名称进行知识性纠错，表现出高度 IP 黏性</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:50%"></div></div>
+            <span class="feedback-count">约 110 条</span>
+          </div>
+        </div>
+      </div>
+      <div class="feedback-item pos">
+        <div class="rank-num pos">4</div>
+        <div class="feedback-content">
+          <div class="feedback-text">对千鸟、螺旋丸、影分身术等技能特效和还原度表示好评</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:39%"></div></div>
+            <span class="feedback-count">约 80 条</span>
+          </div>
+        </div>
+      </div>
+      <div class="feedback-item pos">
+        <div class="rank-num pos">5</div>
+        <div class="feedback-content">
+          <div class="feedback-text">表达对 Itachi、Sasuke、Madara、Obito、Kurama 等后续角色皮肤上线的期待</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:22%"></div></div>
+            <span class="feedback-count">约 60 条</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 负面反馈 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-badge neg">✦ 负面反馈</div>
+      <span class="section-total">共约 <strong>1055</strong> 条 · 占比 48%</span>
+    </div>
+    <div class="feedback-list">
+      <div class="feedback-item neg">
+        <div class="rank-num neg">1</div>
+        <div class="feedback-content">
+          <div class="feedback-text">对 PUBG 频繁推出动漫联动感到厌倦，希望回归真实射击风格（"旧版 PUBG 在哪""还我旧模式"）</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:100%"></div></div>
+            <span class="feedback-count">约 435 条</span>
+          </div>
+        </div>
+      </div>
+      <div class="feedback-item neg">
+        <div class="rank-num neg">2</div>
+        <div class="feedback-content">
+          <div class="feedback-text">认为火影元素破坏游戏沉浸感，调性与射击游戏不符（"这是战斗游戏还是动画""吃鸡还有什么意义"）</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:57%"></div></div>
+            <span class="feedback-count">约 240 条</span>
+          </div>
+        </div>
+      </div>
+      <div class="feedback-item neg">
+        <div class="rank-num neg">3</div>
+        <div class="feedback-content">
+          <div class="feedback-text">对技能平衡性表示担忧，认为飞雷神传送存在不公平优势</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:43%"></div></div>
+            <span class="feedback-count">约 180 条</span>
+          </div>
+        </div>
+      </div>
+      <div class="feedback-item neg">
+        <div class="rank-num neg">4</div>
+        <div class="feedback-content">
+          <div class="feedback-text">对联动道具定价过高、获取成本太贵的不满</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:29%"></div></div>
+            <span class="feedback-count">约 120 条</span>
+          </div>
+        </div>
+      </div>
+      <div class="feedback-item neg">
+        <div class="rank-num neg">5</div>
+        <div class="feedback-content">
+          <div class="feedback-text">对联动必要性提出质疑或进行讽刺，认为此类合作拉低游戏品质</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:20%"></div></div>
+            <span class="feedback-count">约 80 条</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 中性反馈 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-badge neu">✦ 中性反馈</div>
+      <span class="section-total">共约 <strong>538</strong> 条 · 占比 25%</span>
+    </div>
+    <div class="feedback-list">
+      <div class="feedback-item neu">
+        <div class="rank-num neu">1</div>
+        <div class="feedback-content">
+          <div class="feedback-text">玩家讨论或点名自己喜欢的火影角色，并对技能名称进行知识性纠错（螺旋丸是查克拉球、千鸟是雷遁、土遁土流壁）</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:100%"></div></div>
+            <span class="feedback-count">约 210 条</span>
+          </div>
+        </div>
+      </div>
+      <div class="feedback-item neu">
+        <div class="rank-num neu">2</div>
+        <div class="feedback-content">
+          <div class="feedback-text">猜测或期待后续联动角色、皮肤内容，关注 Sasuke / Madara / Itachi / Obito / Spiderman 上线计划</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:67%"></div></div>
+            <span class="feedback-count">约 140 条</span>
+          </div>
+        </div>
+      </div>
+      <div class="feedback-item neu">
+        <div class="rank-num neu">3</div>
+        <div class="feedback-content">
+          <div class="feedback-text">询问联动上线时间、获取方式或活动规则</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:44%"></div></div>
+            <span class="feedback-count">约 115 条</span>
+          </div>
+        </div>
+      </div>
+      <div class="feedback-item neu">
+        <div class="rank-num neu">4</div>
+        <div class="feedback-content">
+          <div class="feedback-text">围绕技能机制、道具属性进行客观讨论和信息交流</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:28%"></div></div>
+            <span class="feedback-count">约 73 条</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Insights -->
+  <div class="insight-section">
+    <h3>◈ 关键洞察</h3>
+    <div class="insight-list">
+      <div class="insight-item">
+        <span class="insight-dot">▸</span>
+        <span><strong style="color:#c8ccd8;">疲劳≠反对：</strong>负面反馈占比最高（48%），但核心矛盾是对 PUBG 频繁动漫联动策略的审美疲劳，而非对火影 IP 本身的抵触。玩家高赞评论普遍反映"又是动漫联动"的累积情绪，以及对旧版 PUBG 写实风格的怀念。</span>
+      </div>
+      <div class="insight-item">
+        <span class="insight-dot">▸</span>
+        <span><strong style="color:#c8ccd8;">技能是核心亮点：</strong>飞雷神传送是讨论最集中的单一内容，大量玩家认为这是联动中最有创意的设计，同时也引发了平衡性争议。</span>
+      </div>
+      <div class="insight-item">
+        <span class="insight-dot">▸</span>
+        <span><strong style="color:#c8ccd8;">原著粉黏性极高：</strong>评论中出现大量原著粉对技能名称的知识性纠错（螺旋丸不是水属性而是查克拉球、千鸟是雷属性、土遁土流壁），说明深度粉丝对联动还原度有极高期待与敏感度。</span>
+      </div>
+      <div class="insight-item">
+        <span class="insight-dot">▸</span>
+        <span><strong style="color:#c8ccd8;">后续期待明确：</strong>Itachi、Sasuke 和 Madara 是被提及最多的后续角色期待，Obito 和 Kurama 也在新增样本中出现，说明玩家对联动系列仍有持续关注意愿。</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  PUBG Mobile × 火影忍者 联动玩家反馈分析 · 数据来源：PUBG Mobile 社媒评论区（TikTok + Instagram）· 2026年6月
+</div>
+
+</body>
+</html>
