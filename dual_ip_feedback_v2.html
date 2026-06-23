@@ -195,6 +195,24 @@
     }
     .stat-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 
+    /* ── COMPARE TABLE ── */
+    .cmp-wrap { margin-bottom: 8px; overflow-x: auto; }
+    .cmp-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .cmp-table th {
+      background: var(--surface2); color: var(--muted); font-weight: 600; font-size: 11px;
+      letter-spacing: .5px; padding: 9px 14px; text-align: left; border-bottom: 1px solid var(--border);
+    }
+    .cmp-table th:first-child { width: 160px; }
+    .cmp-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; color: #c0c4d4; line-height: 1.55; }
+    .cmp-table tr:last-child td { border-bottom: none; }
+    .cmp-table td:first-child { color: var(--text); font-weight: 600; font-size: 12px; }
+    .tag { display: inline-block; font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 4px; white-space: nowrap; }
+    .tag-worse  { background: rgba(248,113,113,.12); color: var(--neg);    border: 1px solid var(--neg-bd); }
+    .tag-better { background: rgba(74,222,128,.12);  color: var(--pos);    border: 1px solid var(--pos-bd); }
+    .tag-same   { background: rgba(96,165,250,.10);  color: var(--neu);    border: 1px solid var(--neu-bd); }
+    .tag-new    { background: rgba(167,139,250,.12); color: var(--purple); border: 1px solid var(--purple-bd); }
+    .cmp-highlight { background: rgba(249,115,22,.04); }
+
     .footer { text-align: center; padding: 28px 20px; border-top: 1px solid var(--border); color: var(--muted); font-size: 12px; }
     @media (max-width: 560px) { .ov-grid { grid-template-columns: 1fr; } .header h1 { font-size: 20px; } }
   </style>
@@ -232,7 +250,89 @@
   </div>
 
   <div class="sample-note">
-    <strong>样本说明：</strong>火影视频评论量（2,335条）多于蜘蛛侠（583条），因火影视频数量更多（3 vs 2），<strong>不代表玩家对火影 IP 的关注度高于蜘蛛侠</strong>。此外，火影视频中大量"Sasuke"评论来自频道主（艺名 S2GSasukeg）的粉丝互动，蜘蛛侠视频中大量"Vural abi"评论来自另一频道主粉丝刷屏，均已去除。
+    <strong>样本说明：</strong>火影视频评论量（2,335条）多于蜘蛛侠（583条），因火影视频数量更多（3 vs 2），<strong>不代表玩家对火影 IP 的关注度高于蜘蛛侠</strong>。数据已剔除各视频频道主粉丝刷屏噪音后进行分析。
+  </div>
+
+  <!-- 先游2 vs 先游3 对比 -->
+  <div class="sec-head" style="margin-top:28px;">
+    <div class="sec-head-icon all">↔</div>
+    <div class="sec-head-text">
+      <h2 class="all">先游 2 vs 先游 3 · 火影对比</h2>
+      <p>两轮数据横向对比，重点追踪情绪演变与新出现议题</p>
+    </div>
+  </div>
+
+  <div class="cmp-wrap">
+    <table class="cmp-table">
+      <thead>
+        <tr>
+          <th>维度</th>
+          <th>先游 2（TikTok + Instagram）</th>
+          <th>先游 3（YouTube + TikTok）</th>
+          <th>变化</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>有效样本量</td>
+          <td>约 2,183 条（含 Instagram）</td>
+          <td>2,335 条（火影部分）</td>
+          <td><span class="tag tag-same">持平</span></td>
+        </tr>
+        <tr>
+          <td>整体情绪</td>
+          <td>负面 48%，正面 27%，中性 25%</td>
+          <td>中性 89%，正面 8.7%，负面 2.1%</td>
+          <td><span class="tag tag-better">明显改善</span></td>
+        </tr>
+        <tr class="cmp-highlight">
+          <td>负面主因</td>
+          <td>动漫化疲劳（非反对火影 IP 本身）；飞雷神传送技能体验偏强引发平衡争议</td>
+          <td>"FreeFire 换皮"认知（玩法层面创新不足）；动漫化疲劳延续</td>
+          <td><span class="tag tag-worse">新增风险</span></td>
+        </tr>
+        <tr>
+          <td>正面核心</td>
+          <td>飞雷神传送技能体验是最大亮点；玩家对技能互动满意</td>
+          <td>原著还原度获高度认可；Kurama 九尾成为情感爆点；Boss 难度设计获赞</td>
+          <td><span class="tag tag-better">正面质量提升</span></td>
+        </tr>
+        <tr class="cmp-highlight">
+          <td>动漫化疲劳</td>
+          <td>先游 2 最主要负面来源，占负面多数</td>
+          <td>仍存在（约 40 条），但已从主因降级为背景噪音</td>
+          <td><span class="tag tag-better">强度下降</span></td>
+        </tr>
+        <tr>
+          <td>角色阵容期待</td>
+          <td>Madara &gt; Sasuke &gt; Itachi &gt; Obito（先游 2 未露面，期待强烈）</td>
+          <td>Itachi 9条 · Obito 5条 · Madara 4条（Sasuke 已上线，关注点转向次要角色）</td>
+          <td><span class="tag tag-same">期待结构延续</span></td>
+        </tr>
+        <tr class="cmp-highlight">
+          <td>新出现议题</td>
+          <td>飞雷神技能平衡争议；奖励路线设计</td>
+          <td>"FreeFire 换皮"标签；MLBB 版本对比设立还原度门槛；IP 重复联动消耗口碑</td>
+          <td><span class="tag tag-new">先游3新增</span></td>
+        </tr>
+        <tr>
+          <td>购买意向信号</td>
+          <td>X-Suit 皮肤期待明确；部分玩家期待奖励路线内容</td>
+          <td>82 条上线时间询问（最大中性话题）；说明付费意愿已形成，等待官方确认</td>
+          <td><span class="tag tag-better">意向更具体</span></td>
+        </tr>
+        <tr>
+          <td>竞品参照</td>
+          <td>较少提及竞品</td>
+          <td>6 条主动以 MLBB 火影联动版本作为皮肤还原度对比基准</td>
+          <td><span class="tag tag-new">先游3新增</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="summary-card" style="border-left-color:var(--naruto); margin-top:12px;">
+    <strong>核心演变结论：</strong>从先游 2 到先游 3，火影联动的整体情绪<strong>显著改善</strong>——动漫化疲劳从主要矛盾降级为背景噪音，正面质量从"技能好玩"升级为"原著还原度高"。但同时出现了新的风险点："FreeFire 换皮"认知一旦扩散，有可能替代动漫化疲劳成为下一轮的主要负面标签。MLBB 设立的视觉还原度门槛也在悄悄提高玩家的期待上限。
   </div>
 
   <!-- 双列情感概览 -->
