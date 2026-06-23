@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PUBG Mobile 先游3 玩家反馈分析</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #222535;
+      --border: #2e3147;
+      --text: #e8eaf0;
+      --muted: #7b7f96;
+      --pos: #4ade80; --pos-bg: #0d2818; --pos-bd: #166534;
+      --neg: #f87171; --neg-bg: #2d0e0e; --neg-bd: #7f1d1d;
+      --neu: #60a5fa; --neu-bg: #0d1f3c; --neu-bd: #1e3a5f;
+      --naruto: #f97316; --naruto-bg: #1f0e02; --naruto-bd: #7c3412;
+      --spider: #60a5fa; --spider-bg: #0d1a2e; --spider-bd: #1e3a5f;
+      --purple: #a78bfa; --purple-bg: #1a1228; --purple-bd: #3b2f5e;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif; line-height: 1.6; }
+
+    /* ── HEADER ── */
+    .header {
+      background: linear-gradient(135deg, #1a0a02 0%, #0f1117 50%, #020b1a 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 44px 24px 32px; text-align: center; position: relative; overflow: hidden;
+    }
+    .header::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 25% 50%, rgba(249,115,22,.10) 0%, transparent 55%),
+                  radial-gradient(ellipse at 75% 50%, rgba(96,165,250,.10) 0%, transparent 55%);
+    }
+    .header-tag {
+      display: inline-block; background: rgba(167,139,250,.12); border: 1px solid rgba(167,139,250,.3);
+      color: var(--purple); font-size: 11px; font-weight: 700; letter-spacing: 2px;
+      padding: 3px 14px; border-radius: 20px; margin-bottom: 14px; position: relative;
+    }
+    .header h1 { font-size: 26px; font-weight: 700; position: relative; }
+    .header h1 .n { color: var(--naruto); }
+    .header h1 .s { color: var(--spider); }
+    .header-sub { margin-top: 6px; color: var(--muted); font-size: 13px; position: relative; }
+    .header-meta { margin-top: 16px; display: flex; justify-content: center; gap: 18px; font-size: 12px; color: var(--muted); flex-wrap: wrap; position: relative; }
+    .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--purple); display: inline-block; vertical-align: middle; margin-right: 4px; }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 860px; margin: 0 auto; padding: 32px 20px 80px; }
+
+    /* ── SECTION HEADER ── */
+    .sec-head {
+      display: flex; align-items: center; gap: 12px; margin: 36px 0 18px;
+    }
+    .sec-head-icon {
+      width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center;
+      justify-content: center; font-size: 16px; flex-shrink: 0;
+    }
+    .sec-head-icon.all  { background: rgba(167,139,250,.12); border: 1px solid var(--purple-bd); }
+    .sec-head-icon.naru { background: var(--naruto-bg); border: 1px solid var(--naruto-bd); }
+    .sec-head-icon.spid { background: var(--spider-bg); border: 1px solid var(--spider-bd); }
+    .sec-head-text h2 { font-size: 17px; font-weight: 700; }
+    .sec-head-text h2.all  { color: var(--purple); }
+    .sec-head-text h2.naru { color: var(--naruto); }
+    .sec-head-text h2.spid { color: var(--spider); }
+    .sec-head-text p { font-size: 12px; color: var(--muted); margin-top: 1px; }
+    .sec-head::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* ── SUMMARY CARD ── */
+    .summary-card {
+      background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--purple);
+      border-radius: 12px; padding: 18px 22px; margin-bottom: 20px;
+      font-size: 13.5px; color: #c0c4d4; line-height: 1.85;
+    }
+    .summary-card strong { color: var(--text); }
+
+    /* ── SAMPLE NOTE ── */
+    .sample-note {
+      background: rgba(167,139,250,.05); border: 1px solid var(--purple-bd);
+      border-radius: 10px; padding: 12px 16px; margin-bottom: 20px;
+      font-size: 12px; color: #a0a5c0; line-height: 1.7;
+    }
+    .sample-note strong { color: var(--purple); }
+
+    /* ── OVERVIEW GRID ── */
+    .ov-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 8px; }
+    .ov-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 18px 20px; position: relative; overflow: hidden;
+    }
+    .ov-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+    .ov-card.naru::before { background: var(--naruto); }
+    .ov-card.spid::before { background: var(--spider); }
+    .ov-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; margin-bottom: 10px; }
+    .ov-label.naru { color: var(--naruto); }
+    .ov-label.spid { color: var(--spider); }
+    .ov-total { font-size: 30px; font-weight: 700; line-height: 1; margin-bottom: 14px; }
+    .ov-card.naru .ov-total { color: var(--naruto); }
+    .ov-card.spid .ov-total { color: var(--spider); }
+    .bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+    .bar-row:last-child { margin-bottom: 0; }
+    .bar-lbl { font-size: 12px; width: 28px; flex-shrink: 0; }
+    .bar-track { flex: 1; background: var(--surface2); border-radius: 3px; height: 7px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 3px; }
+    .fill-pos { background: var(--pos); }
+    .fill-neg { background: var(--neg); }
+    .fill-neu { background: var(--neu); }
+    .bar-val { font-size: 11px; color: var(--muted); width: 72px; text-align: right; flex-shrink: 0; }
+
+    /* ── SUB-DIVIDER ── */
+    .sub-div {
+      display: flex; align-items: center; gap: 10px; margin: 24px 0 14px;
+    }
+    .sub-div-pill {
+      font-size: 11px; font-weight: 700; letter-spacing: 1px;
+      padding: 3px 12px; border-radius: 6px; white-space: nowrap;
+    }
+    .pill-pos  { background: var(--pos-bg);    color: var(--pos);    border: 1px solid var(--pos-bd); }
+    .pill-neg  { background: var(--neg-bg);    color: var(--neg);    border: 1px solid var(--neg-bd); }
+    .pill-neu  { background: var(--neu-bg);    color: var(--neu);    border: 1px solid var(--neu-bd); }
+    .sub-div::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* ── FEEDBACK CARDS ── */
+    .fb-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 6px; }
+    .fb-item {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+      padding: 14px 16px; display: flex; gap: 12px;
+    }
+    .fb-num {
+      width: 22px; height: 22px; border-radius: 5px; display: flex; align-items: center;
+      justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+    }
+    .num-pos { background: var(--pos-bg); color: var(--pos); border: 1px solid var(--pos-bd); }
+    .num-neg { background: var(--neg-bg); color: var(--neg); border: 1px solid var(--neg-bd); }
+    .num-neu { background: var(--neu-bg); color: var(--neu); border: 1px solid var(--neu-bd); }
+    .fb-body { flex: 1; }
+    .fb-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+    .fb-desc  { font-size: 12px; color: #b0b5d0; line-height: 1.65; }
+    .fb-quote {
+      margin-top: 7px; padding: 6px 10px; background: var(--surface2); border-radius: 5px;
+      font-size: 11px; color: var(--muted); border-left: 2px solid var(--border); line-height: 1.6;
+    }
+    .fb-bar { margin-top: 8px; display: flex; align-items: center; gap: 8px; }
+    .fb-bar-track { flex: 1; height: 3px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+    .fb-bar-fill { height: 100%; border-radius: 2px; }
+    .fill-track-pos { background: var(--pos); }
+    .fill-track-neg { background: var(--neg); }
+    .fill-track-neu { background: var(--neu); }
+    .fb-count { font-size: 11px; font-weight: 600; flex-shrink: 0; }
+    .count-pos { color: var(--pos); }
+    .count-neg { color: var(--neg); }
+    .count-neu { color: var(--neu); }
+
+    /* ── TOPIC HEAT ── */
+    .topic-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 18px 20px; margin-bottom: 8px;
+    }
+    .topic-title { font-size: 11px; font-weight: 700; letter-spacing: 1px; margin-bottom: 14px; }
+    .topic-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .topic-row:last-child { margin-bottom: 0; }
+    .topic-name { font-size: 12px; width: 160px; flex-shrink: 0; }
+    .topic-track { flex: 1; background: var(--surface2); border-radius: 3px; height: 7px; overflow: hidden; }
+    .topic-fill { height: 100%; border-radius: 3px; }
+    .topic-count { font-size: 11px; color: var(--muted); width: 32px; text-align: right; flex-shrink: 0; }
+
+    /* ── INSIGHT ── */
+    .insight {
+      background: linear-gradient(135deg, var(--purple-bg) 0%, #0f1117 100%);
+      border: 1px solid var(--purple-bd); border-radius: 12px;
+      padding: 20px 24px; margin-top: 32px;
+    }
+    .insight h3 { font-size: 13px; font-weight: 700; color: var(--purple); margin-bottom: 12px; }
+    .insight-row { display: flex; gap: 10px; font-size: 12.5px; color: #b0b5d0; line-height: 1.7; margin-bottom: 9px; }
+    .insight-row:last-child { margin-bottom: 0; }
+    .insight-dot { color: var(--purple); flex-shrink: 0; }
+
+    /* ── IP SECTION WRAPPER ── */
+    .ip-section {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+      padding: 22px 22px; margin-bottom: 28px;
+    }
+    .ip-section-head {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
+      padding-bottom: 14px; border-bottom: 1px solid var(--border);
+    }
+    .ip-badge {
+      font-size: 12px; font-weight: 700; padding: 3px 12px; border-radius: 6px;
+    }
+    .badge-naru { background: var(--naruto-bg); color: var(--naruto); border: 1px solid var(--naruto-bd); }
+    .badge-spid { background: var(--spider-bg); color: var(--spider); border: 1px solid var(--spider-bd); }
+    .ip-section-stats { display: flex; gap: 16px; font-size: 12px; color: var(--muted); flex-wrap: wrap; }
+    .stat-chip {
+      display: flex; align-items: center; gap: 5px;
+    }
+    .stat-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+    .footer { text-align: center; padding: 28px 20px; border-top: 1px solid var(--border); color: var(--muted); font-size: 12px; }
+    @media (max-width: 560px) { .ov-grid { grid-template-columns: 1fr; } .header h1 { font-size: 20px; } }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-tag">先游 3 · 双 IP 玩家反馈</div>
+  <h1>PUBG Mobile × <span class="n">火影忍者</span> &amp; <span class="s">蜘蛛侠</span></h1>
+  <p class="header-sub">基于 PUBG Mobile 社媒评论区数据（YouTube + TikTok）</p>
+  <div class="header-meta">
+    <span><span class="dot"></span>数据来源：PUBG Mobile 社媒评论区</span>
+    <span><span class="dot"></span>平台：YouTube · TikTok</span>
+    <span><span class="dot"></span>主要用户群：土耳其语玩家</span>
+    <span><span class="dot"></span>分析时间：2026 年 6 月</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ══════════════════════════════════════
+       一、整体先游 3
+  ══════════════════════════════════════ -->
+  <div class="sec-head">
+    <div class="sec-head-icon all">◈</div>
+    <div class="sec-head-text">
+      <h2 class="all">整体先游 3</h2>
+      <p>样本概览 · 情感分布 · 关键结论</p>
+    </div>
+  </div>
+
+  <div class="summary-card">
+    本轮样本来自 <strong>5 个 YouTube 视频 + 8 个 TikTok 视频</strong>，其中火影主题视频 3 个、蜘蛛侠主题视频 2 个，按视频主题独立拆分后分别去除粉丝刷屏噪音。去噪后<strong>火影 2,335 条</strong>、<strong>蜘蛛侠 583 条</strong>，两个 IP 情感结构高度相似——均以<strong>中性期待为主（89–91%）</strong>，正面约 7–9%，负面约 2%。核心差异在于：火影负面集中在<strong>玩法被指"FreeFire 换皮"</strong>，蜘蛛侠负面集中在<strong>皮肤还原度不及旧版</strong>。
+  </div>
+
+  <div class="sample-note">
+    <strong>样本说明：</strong>火影视频评论量（2,335条）多于蜘蛛侠（583条），因火影视频数量更多（3 vs 2），<strong>不代表玩家对火影 IP 的关注度高于蜘蛛侠</strong>。此外，火影视频中大量"Sasuke"评论来自频道主（艺名 S2GSasukeg）的粉丝互动，蜘蛛侠视频中大量"Vural abi"评论来自另一频道主粉丝刷屏，均已去除。
+  </div>
+
+  <!-- 双列情感概览 -->
+  <div class="ov-grid">
+    <div class="ov-card naru">
+      <div class="ov-label naru">火影忍者 · 去噪后</div>
+      <div class="ov-total">2,335</div>
+      <div class="bar-row"><span class="bar-lbl">正面</span><div class="bar-track"><div class="bar-fill fill-pos" style="width:8.7%"></div></div><span class="bar-val">202条 · 8.7%</span></div>
+      <div class="bar-row"><span class="bar-lbl">负面</span><div class="bar-track"><div class="bar-fill fill-neg" style="width:2.1%"></div></div><span class="bar-val">48条 · 2.1%</span></div>
+      <div class="bar-row"><span class="bar-lbl">中性</span><div class="bar-track"><div class="bar-fill fill-neu" style="width:89.3%"></div></div><span class="bar-val">2,085条 · 89.3%</span></div>
+    </div>
+    <div class="ov-card spid">
+      <div class="ov-label spid">蜘蛛侠 · 去噪后</div>
+      <div class="ov-total">583</div>
+      <div class="bar-row"><span class="bar-lbl">正面</span><div class="bar-track"><div class="bar-fill fill-pos" style="width:7.2%"></div></div><span class="bar-val">42条 · 7.2%</span></div>
+      <div class="bar-row"><span class="bar-lbl">负面</span><div class="bar-track"><div class="bar-fill fill-neg" style="width:1.7%"></div></div><span class="bar-val">10条 · 1.7%</span></div>
+      <div class="bar-row"><span class="bar-lbl">中性</span><div class="bar-track"><div class="bar-fill fill-neu" style="width:91.1%"></div></div><span class="bar-val">531条 · 91.1%</span></div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════
+       二、火影忍者玩家期待
+  ══════════════════════════════════════ -->
+  <div class="sec-head" style="margin-top:44px;">
+    <div class="sec-head-icon naru">🔥</div>
+    <div class="sec-head-text">
+      <h2 class="naru">火影忍者 玩家期待</h2>
+      <p>2,335 条有效评论 · 3 个火影主题视频</p>
+    </div>
+  </div>
+
+  <div class="ip-section">
+    <div class="ip-section-head">
+      <span class="ip-badge badge-naru">火影忍者</span>
+      <div class="ip-section-stats">
+        <span class="stat-chip"><span class="stat-dot" style="background:var(--pos)"></span>正面 202条 8.7%</span>
+        <span class="stat-chip"><span class="stat-dot" style="background:var(--neg)"></span>负面 48条 2.1%</span>
+        <span class="stat-chip"><span class="stat-dot" style="background:var(--neu)"></span>中性 2,085条 89.3%</span>
+      </div>
+    </div>
+
+    <!-- 火影 正面 -->
+    <div class="sub-div"><span class="sub-div-pill pill-pos">+ 正面反馈</span></div>
+    <div class="fb-list">
+      <div class="fb-item">
+        <div class="fb-num num-pos">1</div>
+        <div class="fb-body">
+          <div class="fb-title">原著粉对联动还原度的真情实感</div>
+          <div class="fb-desc">追完动漫的玩家表达强烈惊喜，认为这次是"最好的动漫改编"，画面和角色细节与原著高度吻合。</div>
+          <div class="fb-quote">"Resmen animenin oyunu olmus acik ara en iyi uyarlama" · "Animeyi izleyenler icin guzel gorseller ve neredeyse birebir"</div>
+          <div class="fb-bar"><div class="fb-bar-track"><div class="fb-bar-fill fill-track-pos" style="width:100%"></div></div><span class="fb-count count-pos">约 80 条</span></div>
+        </div>
+      </div>
+      <div class="fb-item">
+        <div class="fb-num num-pos">2</div>
+        <div class="fb-body">
+          <div class="fb-title">模式体验和 Boss 设计获认可</div>
+          <div class="fb-desc">玩家对火影模式地图、Boss 难度和整体玩法表示正向，认为"这次 Boss 是史上最难的"，且场景互动丰富。</div>
+          <div class="fb-quote">"BENCE EFSANE OLMUS BU SEFER OYUNUN EN ZOR BOSSUNU GETIRMISLER" · "mod baya iyi her yerde bir seyler var"</div>
+          <div class="fb-bar"><div class="fb-bar-track"><div class="fb-bar-fill fill-track-pos" style="width:75%"></div></div><span class="fb-count count-pos">约 60 条</span></div>
+        </div>
+      </div>
+      <div class="fb-item">
+        <div class="fb-num num-pos">3</div>
+        <div class="fb-body">
+          <div class="fb-title">Kurama 九尾出现引发惊喜</div>
+          <div class="fb-desc">九尾是单一触发情感最强的元素，玩家自发讨论"希望阴阳九尾都出现"，好感溢出。</div>
+          <div class="fb-quote">"KESKE KURAMA YIN VE YANG OLSAYDI NE GUZEL OLURDU" · "Diriltme olayi cok iyi"</div>
+          <div class="fb-bar"><div class="fb-bar-track"><div class="fb-bar-fill fill-track-pos" style="width:38%"></div></div><span class="fb-count count-pos">约 30 条</span></div>
+        </div>
+      </div>
+      <div class="fb-item">
+        <div class="fb-num num-pos">4</div>
+        <div class="fb-body">
+          <div class="fb-title">玩家自发充当 IP 讲解员，社区氛围活跃</div>
+          <div class="fb-desc">Itachi 灭族故事、桥梁命名来源、技能原理被原著粉主动科普，为社区带来高质量自然传播。</div>
+          <div class="fb-quote">"Abi o koprunun amaci narutonun ilk ciddi savasi orda oldu" · "itachi uchiha en sevdigim"</div>
+          <div class="fb-bar"><div class="fb-bar-track"><div class="fb-bar-fill fill-track-pos" style="width:22%"></div></div><span class="fb-count count-pos">18 条</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 火影 负面 -->
+    <div class="sub-div"><span class="sub-div-pill pill-neg">- 负面反馈</span></div>
+    <div class="fb-list">
+      <div class="fb-item">
+        <div class="fb-num num-neg">1</div>
+        <div class="fb-body">
+          <div class="fb-title">模式被指"FreeFire 换皮"——最核心风险</div>
+          <div class="fb-desc">最高频负面词是"free fire olmus"（变成 FF 了），玩家认为技能体系与 Free Fire 早期联动版本相同，缺乏创新，是当前最大口碑雷点。</div>
+          <div class="fb-quote">"free fire olmus bu ne aq" · "FF calmis oluyor" · "BOK GiBI MOD iYiCE COCUK MODUNA DONDU"</div>
+          <div class="fb-bar"><div class="fb-bar-track"><div class="fb-bar-fill fill-track-neg" style="width:100%"></div></div><span class="fb-count count-neg">约 20 条</span></div>
+        </div>
+      </div>
+      <div class="fb-item">
+        <div class="fb-num num-neg">2</div>
+        <div class="fb-body">
+          <div class="fb-title">动漫化疲劳——呼唤回归经典地图</div>
+          <div class="fb-desc">与先游 2 负面情绪完全一致：玩家怀念旧版 Pochinki、Nova、Military School，认为联动模式把游戏越改越差。</div>
+          <div class="fb-quote">"Eski pochinki nova military school savaslari" · "Mod getirmesinler yeter herkes klasik oynamali"</div>
+          <div class="fb-bar"><div class="fb-bar-track"><div class="fb-bar-fill fill-track-neg" style="width:83%"></div></div><span class="fb-count count-neg">约 18 条</span></div>
+        </div>
+      </div>
+      <div class="fb-item">
+        <div class="fb-num num-neg">3</div>
+        <div class="fb-body">
+          <div class="fb-title">联动重复，同一 IP 过度消费</div>
+          <div class="fb-desc">玩家指出 2–3 年前 PUBG 就做过火影联动，认为反复合作是在消耗口碑，并与 Free Fire 相互"抄袭"挂钩。</div>
+          <div class="fb-quote">"pubg 2-3 yil onceden Naruto gelmisti kostumu bile var yani ff calmis oluyor"</div>
+          <div class="fb-bar"><div class="fb-bar-track"><div class="fb-bar-fill fill-track-neg" style="width:25%"></div></div><span class="fb-count count-neg">约 5 条</span></div>
+        </div>
+      </div>
+      <div class="fb-item">
+        <div class="fb-num num-neg">4</div>
+        <div class="fb-body">
+          <div class="fb-title">UC 涨价叠加负面情绪</div>
+          <div class="fb-desc">少数玩家将对模式的不满与 UC 涨价一并宣泄，是长期积压的价格痛点，联动期间容易被放大。</div>
+          <div class="fb-quote">"zaten uc ye zam geldi yine sokacaklar offf yeter" · "1 kere bile royal pas acmadim"</div>
+          <div class="fb-bar"><div class="fb-bar-track"><div class="fb-bar-fill fill-track-neg" style="width:20%"></div></div><span class="fb-count count-neg">约 5 条</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 火影 中性 -->
+    <div class="sub-div"><span class="sub-div-pill pill-neu">○ 中性期待</span></div>
+    <div class="topic-card">
+      <div class="topic-title" style="color:var(--naruto);">话题热度分布（2,085 条中性）</div>
+      <div class="topic-row"><div class="topic-name">上线时间询问</div><div class="topic-track"><div class="topic-fill" style="width:100%;background:#64748b;"></div></div><div class="topic-count">82</div></div>
+      <div class="topic-row"><div class="topic-name">动漫化疲劳</div><div class="topic-track"><div class="topic-fill" style="width:49%;background:var(--neg);"></div></div><div class="topic-count">40</div></div>
+      <div class="topic-row"><div class="topic-name">模式品质/玩法讨论</div><div class="topic-track"><div class="topic-fill" style="width:40%;background:var(--naruto);"></div></div><div class="topic-count">33</div></div>
+      <div class="topic-row"><div class="topic-name">IP 知识分享</div><div class="topic-track"><div class="topic-fill" style="width:22%;background:var(--pos);"></div></div><div class="topic-count">18</div></div>
+      <div class="topic-row"><div class="topic-name">Itachi 期待</div><div class="topic-track"><div class="topic-fill" style="width:11%;background:var(--purple);"></div></div><div class="topic-count">9</div></div>
+      <div class="topic-row"><div class="topic-name">Naruto X-Suit 期待</div><div class="topic-track"><div class="topic-fill" style="width:9%;background:var(--purple);"></div></div><div class="topic-count">7</div></div>
+      <div class="topic-row"><div class="topic-name">Kurama 反应</div><div class="topic-track"><div class="topic-fill" style="width:9%;background:var(--pos);"></div></div><div class="topic-count">7</div></div>
+      <div class="topic-row"><div class="topic-name">技能讨论/纠错</div><div class="topic-track"><div class="topic-fill" style="width:7%;background:var(--neu);"></div></div><div class="topic-count">6</div></div>
+      <div class="topic-row"><div class="topic-name">MLBB 版本对比</div><div class="topic-track"><div class="topic-fill" style="width:7%;background:var(--muted);"></div></div><div class="topic-count">6</div></div>
+      <div class="topic-row"><div class="topic-name">Obito 期待</div><div class="topic-track"><div class="topic-fill" style="width:6%;background:var(--purple);"></div></div><div class="topic-count">5</div></div>
+      <div class="topic-row"><div class="topic-name">Madara X-Suit 期待</div><div class="topic-track"><div class="topic-fill" style="width:5%;background:var(--purple);"></div></div><div class="topic-count">4</div></div>
+    </div>
+    <div class="fb-list" style="margin-top:10px;">
+      <div class="fb-item">
+        <div class="fb-num num-neu">①</div>
+        <div class="fb-body">
+          <div class="fb-title">上线时间询问是隐藏购买意向信号（82条）</div>
+          <div class="fb-desc">询问"何时上线"是中性话题最大类别，说明玩家已产生购买意向，仅缺官方确认信号——是最大的转化窗口期。</div>
+          <div class="fb-bar"><div class="fb-bar-track"><div class="fb-bar-fill fill-track-neu" style="width:100%"></div></div><span class="fb-count count-neu">82 条</span></div>
+        </div>
+      </div>
+      <div class="fb-item">
+        <div class="fb-num num-neu">②</div>
+        <div class="fb-body">
+          <div class="fb-title">Madara / Itachi / Obito 三角阵容期待</div>
+          <div class="fb-desc">Madara 是"付费是否值得"的核心决策因素，Itachi 情感黏性最强是自然传播发动机，Obito 有小但忠诚的支持群体。</div>
+          <div class="fb-quote">"Madara seti gelmese bu modun gelmesi hic gerekmiyor"</div>
+          <div class="fb-bar"><div class="fb-bar-track"><div class="fb-bar-fill fill-track-neu" style="width:22%"></div></div><span class="fb-count count-neu">Itachi 9 · Obito 5 · Madara 4</span></div>
+        </div>
+      </div>
+      <div class="fb-item">
+        <div class="fb-num num-neu">③</div>
+        <div class="fb-body">
+          <div class="fb-title">MLBB 版本对比——还原度参考标准</div>
+          <div class="fb-desc">玩家主动以《Mobile Legends》火影联动皮肤作为还原度基准评判 PUBG 版本，说明竞品已设立了视觉期待门槛。</div>
+          <div class="fb-bar"><div class="fb-bar-track"><div class="fb-bar-fill fill-track-neu" style="width:7%"></div></div><span class="fb-count count-neu">6 条</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════
+       三、蜘蛛侠玩家期待
+  ══════════════════════════════════════ -->
+  <div class="sec-head" style="margin-top:10px;">
+    <div class="sec-head-icon spid">🕷</div>
+    <div class="sec-head-text">
+      <h2 class="spid">蜘蛛侠 玩家期待</h2>
+      <p>583 条有效评论 · 2 个蜘蛛侠主题视频</p>
+    </div>
+  </div>
+
+  <div class="ip-section">
+    <div class="ip-section-head">
+      <span class="ip-badge badge-spid">蜘蛛侠</span>
+      <div class="ip-section-stats">
+        <span class="stat-chip"><span class="stat-dot" style="background:var(--pos)"></span>正面 42条 7.2%</span>
+        <span class="stat-chip"><span class="stat-dot" style="background:var(--neg)"></span>负面 10条 1.7%</span>
+        <span class="stat-chip"><span class="stat-dot" style="background:var(--neu)"></span>中性 531条 91.1%</span>
+      </div>
+    </div>
+
+    <!-- 蜘蛛侠 正面 -->
+    <div class="sub-div"><span class="sub-div-pill pill-pos">+ 正面反馈</span></div>
+    <div class="fb-list">
+      <div class="fb-item">
+        <div class="fb-num num-pos">1</div>
+        <div class="fb-body">
+          <div class="fb-title">老粉对蜘蛛侠联动回归的情感欢迎</div>
+          <div class="fb-desc">从小喜欢蜘蛛侠的玩家表达"再次回来太开心了"，是蜘蛛侠侧最强情感共鸣来源，且对应较高的付费意愿。</div>
+          <div class="fb-quote">"Benim en sevdigim kucuklugumden beri Spiderman, ilk geldiginde modu cok sevdim yine geldiginden cok mutluyum"</div>
+          <div class="fb-bar"><div class="fb-bar-track"><div class="fb-bar-fill fill-track-pos" style="width:100%"></div></div><span class="fb-count count-pos">约 15 条</span></div>
+        </div>
+      </div>
+      <div class="fb-item">
+        <div class="fb-num num-pos">2</div>
+        <div class="fb-body">
+          <div class="fb-title">模式体验整体正向，Beta 期仍保持期待</div>
+          <div class="fb-desc">"Mod asiri guzel"、"uzun zaman sonra gelecek en iyi mod" 等，玩家在看到 Beta 内容后未降低期待，对正式版充满信心。</div>
+          <div class="fb-quote">"Abi mod asiri guzel boyle sehirler ve etkinlik alanlari yapa biliyorken neden yapmiyor pubg" · "bence en iyi mod olcak"</div>
+          <div class="fb-bar"><div class="fb-bar-track"><div class="fb-bar-fill fill-track-pos" style="width:67%"></div></div><span class="fb-count count-pos">约 10 条</span></div>
+        </div>
+      </div>
+      <div class="fb-item">
+        <div class="fb-num num-pos">3</div>
+        <div class="fb-body">
+          <div class="fb-title">明确偏好蜘蛛侠超过火影的独立受众</div>
+          <div class="fb-desc">有玩家明确说"蜘蛛侠模式比火影模式好多了"，说明 Marvel 粉是独立于动漫粉的细分受众群体，不应混同。</div>
+          <div class="fb-quote">"Naruto sasuke modundan daha iyi inanilmaz bir mod" · "Ben spiderman oynuyorum PUBG gelincede super"</div>
+          <div class="fb-bar"><div class="fb-bar-track"><div class="fb-bar-fill fill-track-pos" style="width:40%"></div></div><span class="fb-count count-pos">约 6 条</span></div>
+        </div>
+      </div>
+      <div class="fb-item">
+        <div class="fb-num num-pos">4</div>
+        <div class="fb-body">
+          <div class="fb-title">玩家自发将联动与新电影挂钩，认为时机正确</div>
+          <div class="fb-desc">玩家主动关联《Brand New Day》院线档期，表达"时间踩得刚好"，是低成本的外部传播势能。</div>
+          <div class="fb-quote">"Tam Spiderman yeni film zamanina denk geliyor" · "Abi bu yeni bir mod gibi geldi sebebi yeni film cikiyor"</div>
+          <div class="fb-bar"><div class="fb-bar-track"><div class="fb-bar-fill fill-track-pos" style="width:40%"></div></div><span class="fb-count count-pos">6 条</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 蜘蛛侠 负面 -->
+    <div class="sub-div"><span class="sub-div-pill pill-neg">- 负面反馈</span></div>
+    <div class="fb-list">
+      <div class="fb-item">
+        <div class="fb-num num-neg">1</div>
+        <div class="fb-body">
+          <div class="fb-title">新版皮肤还原度不如旧版（"dandik"廉价感）</div>
+          <div class="fb-desc">玩家明确对比旧版蜘蛛侠联动皮肤，认为新版廉价，"真正的紧身服才是正确的"。这是上线后口碑最大的潜在雷点。</div>
+          <div class="fb-quote">"Spiderman seti hep boyle dandik setler geliyor hic benzmiyor" · "Spider-Man in gercek dar kostuumu gelse daha iyi olurdu"</div>
+          <div class="fb-bar"><div class="fb-bar-track"><div class="fb-bar-fill fill-track-neg" style="width:100%"></div></div><span class="fb-count count-neg">4 条</span></div>
+        </div>
+      </div>
+      <div class="fb-item">
+        <div class="fb-num num-neg">2</div>
+        <div class="fb-body">
+          <div class="fb-title">接受蜘蛛侠但反对动漫化改变游戏调性</div>
+          <div class="fb-desc">"我们只想要蜘蛛侠模式，不是这种"——这批玩家认可 IP，但反对联动模式以动漫化方式改变 PUBG 的射击品类底色。</div>
+          <div class="fb-quote">"Savas oyunlarini kiz oyunlarina ceviriyolar pubg, biz sadece Spiderman modu istiyoduk"</div>
+          <div class="fb-bar"><div class="fb-bar-track"><div class="fb-bar-fill fill-track-neg" style="width:75%"></div></div><span class="fb-count count-neg">3 条</span></div>
+        </div>
+      </div>
+      <div class="fb-item">
+        <div class="fb-num num-neg">3</div>
+        <div class="fb-body">
+          <div class="fb-title">Beta 版模式整体质量不满</div>
+          <div class="fb-desc">"Mod kotu"、"eski Spiderman moduna hic benzemiyo" ——少数玩家对 Beta 中看到的内容整体设计不认可。</div>
+          <div class="fb-quote">"Eski spiderman moduna hic benzemiyo cok kotu" · "Mod kotu"</div>
+          <div class="fb-bar"><div class="fb-bar-track"><div class="fb-bar-fill fill-track-neg" style="width:50%"></div></div><span class="fb-count count-neg">3 条</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 蜘蛛侠 中性 -->
+    <div class="sub-div"><span class="sub-div-pill pill-neu">○ 中性期待</span></div>
+    <div class="topic-card">
+      <div class="topic-title" style="color:var(--spider);">话题热度分布（531 条中性）</div>
+      <div class="topic-row"><div class="topic-name">手套皮肤回归</div><div class="topic-track"><div class="topic-fill" style="width:100%;background:var(--spider);"></div></div><div class="topic-count">6</div></div>
+      <div class="topic-row"><div class="topic-name">新电影节点关联</div><div class="topic-track"><div class="topic-fill" style="width:100%;background:var(--pos);"></div></div><div class="topic-count">6</div></div>
+      <div class="topic-row"><div class="topic-name">Venom 期待</div><div class="topic-track"><div class="topic-fill" style="width:83%;background:var(--purple);"></div></div><div class="topic-count">5</div></div>
+      <div class="topic-row"><div class="topic-name">皮肤获取方式询问</div><div class="topic-track"><div class="topic-fill" style="width:67%;background:#64748b;"></div></div><div class="topic-count">4</div></div>
+      <div class="topic-row"><div class="topic-name">动漫化反对</div><div class="topic-track"><div class="topic-fill" style="width:67%;background:var(--neg);"></div></div><div class="topic-count">4</div></div>
+      <div class="topic-row"><div class="topic-name">独立模式形式确认</div><div class="topic-track"><div class="topic-fill" style="width:50%;background:var(--spider);"></div></div><div class="topic-count">3</div></div>
+      <div class="topic-row"><div class="topic-name">皮肤还原度讨论</div><div class="topic-track"><div class="topic-fill" style="width:33%;background:var(--neg);"></div></div><div class="topic-count">2</div></div>
+    </div>
+    <div class="fb-list" style="margin-top:10px;">
+      <div class="fb-item">
+        <div class="fb-num num-neu">①</div>
+        <div class="fb-body">
+          <div class="fb-title">手套皮肤回归 · 视觉必须超越旧版</div>
+          <div class="fb-desc">旧版蜘蛛侠联动是玩家心中的视觉标准，新版若还原度更低会直接被对比并形成差评，皮肤设计是口碑最大变量。</div>
+          <div class="fb-quote">"keske gercek spiderman kostuumu gelse bunlar hic guzel degil" · "Spider-Man in gercek dar kostuumu gelse daha iyi olurdu"</div>
+          <div class="fb-bar"><div class="fb-bar-track"><div class="fb-bar-fill fill-track-neu" style="width:100%"></div></div><span class="fb-count count-neu">6 条</span></div>
+        </div>
+      </div>
+      <div class="fb-item">
+        <div class="fb-num num-neu">②</div>
+        <div class="fb-body">
+          <div class="fb-title">借势《Brand New Day》电影档期（7月30日）</div>
+          <div class="fb-desc">玩家已自发建立游戏与电影的关联，若官方宣传节奏与电影同步，可借院线热度倍增社媒传播效果。</div>
+          <div class="fb-quote">"Abi 30 temmuzda orumcek adam yep yeni bir gun filimi cikacak" · "Filmide geliyor"</div>
+          <div class="fb-bar"><div class="fb-bar-track"><div class="fb-bar-fill fill-track-neu" style="width:100%"></div></div><span class="fb-count count-neu">6 条</span></div>
+        </div>
+      </div>
+      <div class="fb-item">
+        <div class="fb-num num-neu">③</div>
+        <div class="fb-body">
+          <div class="fb-title">Venom 加入可显著提升内容丰富度感知</div>
+          <div class="fb-desc">多条评论自发期待 Venom，蜘蛛侠 vs Venom 的对抗叙事天然契合 PUBG 的对抗玩法，且能打开额外皮肤销售空间。</div>
+          <div class="fb-quote">"keske spiderman etkinliginde venom elbiseleride olsaydi venomla spiderman savas yapardi"</div>
+          <div class="fb-bar"><div class="fb-bar-track"><div class="fb-bar-fill fill-track-neu" style="width:83%"></div></div><span class="fb-count count-neu">5 条</span></div>
+        </div>
+      </div>
+      <div class="fb-item">
+        <div class="fb-num num-neu">④</div>
+        <div class="fb-body">
+          <div class="fb-title">上线形式存在认知混乱（独立模式 vs 道具）</div>
+          <div class="fb-desc">部分玩家不清楚蜘蛛侠是独立模式还是仅为道具/皮肤，官方需在宣传期提前做好预期管理。</div>
+          <div class="fb-quote">"Ben anlamadim budami ayri mod olacak ? Yoksa naruto ilemi birlikde gelecek?"</div>
+          <div class="fb-bar"><div class="fb-bar-track"><div class="fb-bar-fill fill-track-neu" style="width:50%"></div></div><span class="fb-count count-neu">3 条</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       关键洞察
+  ══════════════════════════════════════ -->
+  <div class="insight">
+    <h3>◈ 关键洞察</h3>
+    <div class="insight-row">
+      <span class="insight-dot">▸</span>
+      <span><strong style="color:#c8ccd8;">两个 IP 情感结构高度相似，不是一强一弱。</strong>去噪并按视频主题拆分后，火影（8.7% 正）与蜘蛛侠（7.2% 正）的情感分布几乎一致。原始数据中火影评论量更多，仅因视频数量差异（3 vs 2），不反映玩家 IP 偏好。</span>
+    </div>
+    <div class="insight-row">
+      <span class="insight-dot">▸</span>
+      <span><strong style="color:#c8ccd8;">两个 IP 的负面风险方向完全不同，预防措施也应不同。</strong>火影侧需在玩法层面突破"FreeFire 换皮"认知；蜘蛛侠侧需在皮肤视觉层面超越旧版标准。混为一谈会导致优先级错乱。</span>
+    </div>
+    <div class="insight-row">
+      <span class="insight-dot">▸</span>
+      <span><strong style="color:#c8ccd8;">动漫化疲劳是两个 IP 共同的背景噪音。</strong>火影（40条）和蜘蛛侠（4条）均有"战斗游戏不该变成这样"的声音，与先游 2 一脉相承。宣传侧建议强调"技能体验升级"而非"动漫联动"。</span>
+    </div>
+    <div class="insight-row">
+      <span class="insight-dot">▸</span>
+      <span><strong style="color:#c8ccd8;">蜘蛛侠侧存在独特的外部借势机会。</strong>《Brand New Day》7月30日院线档期已被玩家自发关联，官方若同步宣传节奏可免费借力院线热度，是火影侧没有的额外传播窗口。</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  PUBG Mobile × 火影忍者 &amp; 蜘蛛侠 先游3 玩家反馈分析 · 数据来源：PUBG Mobile 社媒评论区（YouTube + TikTok）· 2026 年 6 月
+</div>
+</body>
+</html>
