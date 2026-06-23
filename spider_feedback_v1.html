@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PUBG Mobile × 蜘蛛侠 先游3 玩家反馈分析</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #222535;
+      --border: #2e3147;
+      --text: #e8eaf0;
+      --text-muted: #7b7f96;
+      --positive: #4ade80;
+      --positive-bg: #0d2818;
+      --positive-border: #166534;
+      --negative: #f87171;
+      --negative-bg: #2d0e0e;
+      --negative-border: #7f1d1d;
+      --neutral: #60a5fa;
+      --neutral-bg: #0d1f3c;
+      --neutral-border: #1e3a5f;
+      --accent: #3b82f6;
+      --accent-bg: #0d1a2e;
+      --accent-border: #1e3a5f;
+      --accent-light: #93c5fd;
+      --purple: #a78bfa;
+      --purple-bg: #1a1228;
+      --purple-border: #3b2f5e;
+      --red: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif; line-height: 1.6; }
+
+    .header {
+      background: linear-gradient(135deg, #020b1a 0%, #0f1117 50%, #060d1a 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 0 36px; text-align: center; position: relative; overflow: hidden;
+    }
+    .header::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 30% 50%, rgba(59,130,246,0.12) 0%, transparent 55%),
+                  radial-gradient(ellipse at 70% 50%, rgba(239,68,68,0.06) 0%, transparent 55%);
+    }
+    .header-tag {
+      display: inline-block; background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.35);
+      color: var(--accent-light); font-size: 12px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; padding: 4px 14px; border-radius: 20px; margin-bottom: 16px; position: relative;
+    }
+    .header h1 { font-size: 30px; font-weight: 700; position: relative; }
+    .header h1 span { color: var(--accent-light); }
+    .header-sub { margin-top: 8px; color: var(--text-muted); font-size: 14px; position: relative; }
+    .header-meta { margin-top: 20px; display: flex; justify-content: center; gap: 20px; font-size: 12px; color: var(--text-muted); flex-wrap: wrap; position: relative; }
+    .header-meta span { display: flex; align-items: center; gap: 6px; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+
+    .summary-card {
+      background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent);
+      border-radius: 12px; padding: 24px 28px; margin-bottom: 32px; font-size: 14px; color: #c8ccd8; line-height: 1.85;
+    }
+    .summary-card strong { color: var(--text); }
+
+    .stats-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 32px; }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 20px 22px; text-align: center; position: relative; overflow: hidden;
+    }
+    .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+    .stat-card.pos::before { background: var(--positive); }
+    .stat-card.neg::before { background: var(--negative); }
+    .stat-card.neu::before { background: var(--neutral); }
+    .stat-number { font-size: 36px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+    .stat-card.pos .stat-number { color: var(--positive); }
+    .stat-card.neg .stat-number { color: var(--negative); }
+    .stat-card.neu .stat-number { color: var(--neutral); }
+    .stat-label { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+    .stat-pct { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+    .stat-card.pos .stat-pct { background: var(--positive-bg); color: var(--positive); border: 1px solid var(--positive-border); }
+    .stat-card.neg .stat-pct { background: var(--negative-bg); color: var(--negative); border: 1px solid var(--negative-border); }
+    .stat-card.neu .stat-pct { background: var(--neutral-bg); color: var(--neutral); border: 1px solid var(--neutral-border); }
+
+    .bar-section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px; margin-bottom: 32px; }
+    .bar-section h3 { font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px; }
+    .bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .bar-row:last-child { margin-bottom: 0; }
+    .bar-label { font-size: 13px; color: var(--text); width: 60px; text-align: right; flex-shrink: 0; }
+    .bar-track { flex: 1; background: var(--surface2); border-radius: 4px; height: 10px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 4px; }
+    .bar-fill.pos { background: var(--positive); }
+    .bar-fill.neg { background: var(--negative); }
+    .bar-fill.neu { background: var(--neutral); }
+    .bar-count { font-size: 13px; color: var(--text-muted); width: 90px; flex-shrink: 0; }
+
+    .topic-section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px 24px; margin-bottom: 32px; }
+    .topic-section h3 { font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 18px; }
+    .topic-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .topic-row:last-child { margin-bottom: 0; }
+    .topic-name { font-size: 13px; color: var(--text); width: 200px; flex-shrink: 0; }
+    .topic-track { flex: 1; background: var(--surface2); border-radius: 4px; height: 9px; overflow: hidden; }
+    .topic-fill { height: 100%; border-radius: 4px; }
+    .topic-count { font-size: 12px; color: var(--text-muted); width: 50px; text-align: right; flex-shrink: 0; }
+
+    /* 电影节点高亮卡片 */
+    .film-card {
+      background: linear-gradient(135deg, #0a1628 0%, #0f1117 100%);
+      border: 1px solid rgba(59,130,246,0.35); border-radius: 12px;
+      padding: 18px 22px; margin-bottom: 28px;
+      display: flex; gap: 16px; align-items: flex-start;
+    }
+    .film-icon { font-size: 28px; flex-shrink: 0; }
+    .film-title { font-size: 14px; font-weight: 700; color: var(--accent-light); margin-bottom: 5px; }
+    .film-text { font-size: 13px; color: #b0b5d0; line-height: 1.65; }
+    .film-date { display: inline-block; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); color: var(--accent-light); font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 6px; margin-top: 6px; }
+
+    .section { margin-bottom: 36px; }
+    .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .section-badge { display: flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 8px; font-size: 15px; font-weight: 700; }
+    .section-badge.pos { background: var(--positive-bg); color: var(--positive); border: 1px solid var(--positive-border); }
+    .section-badge.neg { background: var(--negative-bg); color: var(--negative); border: 1px solid var(--negative-border); }
+    .section-badge.neu { background: var(--neutral-bg); color: var(--neutral); border: 1px solid var(--neutral-border); }
+    .section-badge.demand { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+    .section-total { margin-left: auto; font-size: 13px; color: var(--text-muted); }
+    .section-total strong { color: var(--text); }
+
+    .feedback-list { display: flex; flex-direction: column; gap: 10px; }
+    .feedback-item {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+      padding: 14px 18px; display: flex; align-items: flex-start; gap: 14px;
+    }
+    .feedback-item:hover { border-color: #3e4260; }
+    .rank-num {
+      width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center;
+      justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+    }
+    .pos .rank-num { background: var(--positive-bg); color: var(--positive); border: 1px solid var(--positive-border); }
+    .neg .rank-num { background: var(--negative-bg); color: var(--negative); border: 1px solid var(--negative-border); }
+    .neu .rank-num { background: var(--neutral-bg); color: var(--neutral); border: 1px solid var(--neutral-border); }
+    .demand .rank-num { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+
+    .feedback-content { flex: 1; }
+    .feedback-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .feedback-text { font-size: 13px; color: #b0b5d0; line-height: 1.65; }
+    .feedback-quote {
+      margin-top: 8px; padding: 8px 12px; background: var(--surface2); border-radius: 6px;
+      font-size: 12px; color: var(--text-muted); border-left: 2px solid var(--border); line-height: 1.6;
+    }
+    .feedback-bar { margin-top: 10px; display: flex; align-items: center; gap: 10px; }
+    .feedback-bar-track { flex: 1; height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+    .feedback-bar-fill { height: 100%; border-radius: 2px; }
+    .pos .feedback-bar-fill { background: var(--positive); }
+    .neg .feedback-bar-fill { background: var(--negative); }
+    .neu .feedback-bar-fill { background: var(--neutral); }
+    .demand .feedback-bar-fill { background: var(--purple); }
+    .feedback-count { font-size: 12px; font-weight: 600; flex-shrink: 0; }
+    .pos .feedback-count { color: var(--positive); }
+    .neg .feedback-count { color: var(--negative); }
+    .neu .feedback-count { color: var(--neutral); }
+    .demand .feedback-count { color: var(--purple); }
+
+    .insight-section {
+      background: linear-gradient(135deg, #0a1628 0%, #0f1117 100%);
+      border: 1px solid rgba(59,130,246,0.25); border-radius: 12px; padding: 24px 28px; margin-bottom: 36px;
+    }
+    .insight-section h3 { font-size: 14px; font-weight: 700; color: var(--accent-light); margin-bottom: 16px; }
+    .insight-list { display: flex; flex-direction: column; gap: 10px; }
+    .insight-item { display: flex; gap: 10px; font-size: 13px; color: #b0b5d0; line-height: 1.65; }
+    .insight-dot { color: var(--accent-light); flex-shrink: 0; margin-top: 2px; }
+
+    .footer { text-align: center; padding: 32px 24px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 12px; }
+    @media (max-width:600px) {
+      .stats-row { grid-template-columns: 1fr; }
+      .header h1 { font-size: 22px; }
+      .topic-name { width: 150px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-tag">先游 3 · 蜘蛛侠专项反馈分析</div>
+  <h1>PUBG Mobile × <span>蜘蛛侠</span> 联动</h1>
+  <p class="header-sub">基于 PUBG Mobile 社媒评论区数据（YouTube + TikTok，蜘蛛侠相关评论 57 条）</p>
+  <div class="header-meta">
+    <span><span class="dot"></span> 数据来源：PUBG Mobile 社媒评论区</span>
+    <span><span class="dot"></span> 平台：YouTube · TikTok</span>
+    <span><span class="dot"></span> 主要用户群：土耳其语玩家</span>
+    <span><span class="dot"></span> 分析时间：2026年6月</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="summary-card">
+    蜘蛛侠相关有效评论 57 条，整体以<strong>期待型中性为主</strong>（80.7%）。正面情绪以<strong>老玩家对蜘蛛侠联动回归的情感欢迎</strong>为主；负面核心矛盾是<strong>新版皮肤还原度不及旧版</strong>，且玩家强烈期待独立模式而非仅靠手套技能。值得特别关注的是：<strong>7月30日新蜘蛛侠电影</strong>（Brand New Day）上映时间节点与联动档期高度重合，玩家自发讨论，是可以借势的外部热点。
+  </div>
+
+  <!-- 电影节点高亮 -->
+  <div class="film-card">
+    <div class="film-icon">🎬</div>
+    <div>
+      <div class="film-title">外部热点：蜘蛛侠新电影档期与联动节点重合</div>
+      <div class="film-text">多名玩家主动在评论区提及蜘蛛侠新电影《Brand New Day》（Marvel），认为 PUBG 联动时间节点"恰好踩上"，是天然的借势机会。若联动活动内容/宣传节奏与电影上映对齐，可大幅放大社媒传播效果。</div>
+      <span class="film-date">新电影上映：2026年7月30日 / 7月31日</span>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card pos">
+      <div class="stat-number">9</div>
+      <div class="stat-label">正面反馈</div>
+      <span class="stat-pct">▲ 15.8%</span>
+    </div>
+    <div class="stat-card neg">
+      <div class="stat-number">2</div>
+      <div class="stat-label">负面反馈</div>
+      <span class="stat-pct">▼ 3.5%</span>
+    </div>
+    <div class="stat-card neu">
+      <div class="stat-number">46</div>
+      <div class="stat-label">中性反馈</div>
+      <span class="stat-pct">— 80.7%</span>
+    </div>
+  </div>
+
+  <div class="bar-section">
+    <h3>情感分布概览</h3>
+    <div class="bar-row">
+      <div class="bar-label">正面</div>
+      <div class="bar-track"><div class="bar-fill pos" style="width:15.8%"></div></div>
+      <div class="bar-count">9 条 · 15.8%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">负面</div>
+      <div class="bar-track"><div class="bar-fill neg" style="width:3.5%"></div></div>
+      <div class="bar-count">2 条 · 3.5%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">中性</div>
+      <div class="bar-track"><div class="bar-fill neu" style="width:80.7%"></div></div>
+      <div class="bar-count">46 条 · 80.7%</div>
+    </div>
+  </div>
+
+  <!-- 话题分布 -->
+  <div class="topic-section">
+    <h3>蜘蛛侠话题热度分布</h3>
+    <div class="topic-row">
+      <div class="topic-name">独立模式期待</div>
+      <div class="topic-track"><div class="topic-fill" style="width:100%;background:var(--accent);"></div></div>
+      <div class="topic-count">15 条</div>
+    </div>
+    <div class="topic-row">
+      <div class="topic-name">手套皮肤回归期待</div>
+      <div class="topic-track"><div class="topic-fill" style="width:73%;background:var(--accent);"></div></div>
+      <div class="topic-count">11 条</div>
+    </div>
+    <div class="topic-row">
+      <div class="topic-name">新电影节点讨论</div>
+      <div class="topic-track"><div class="topic-fill" style="width:27%;background:var(--positive);"></div></div>
+      <div class="topic-count">4 条</div>
+    </div>
+    <div class="topic-row">
+      <div class="topic-name">旧版对比/还原度</div>
+      <div class="topic-track"><div class="topic-fill" style="width:13%;background:var(--negative);"></div></div>
+      <div class="topic-count">2 条</div>
+    </div>
+    <div class="topic-row">
+      <div class="topic-name">Venom 联动期待</div>
+      <div class="topic-track"><div class="topic-fill" style="width:13%;background:var(--purple);"></div></div>
+      <div class="topic-count">2 条</div>
+    </div>
+    <div class="topic-row">
+      <div class="topic-name">动漫化疲劳/调性反对</div>
+      <div class="topic-track"><div class="topic-fill" style="width:7%;background:#64748b;"></div></div>
+      <div class="topic-count">1 条</div>
+    </div>
+  </div>
+
+  <!-- 玩家最迫切的需求 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-badge demand">★ 玩家最迫切的需求</div>
+    </div>
+    <div class="feedback-list">
+
+      <div class="feedback-item demand">
+        <div class="rank-num demand">1</div>
+        <div class="feedback-content">
+          <div class="feedback-title">蜘蛛侠作为独立模式落地，而非附属于火影</div>
+          <div class="feedback-text">这是蜘蛛侠侧声量最大的诉求（15 条），玩家明确希望蜘蛛侠有独立的模式/活动区域，而非只以手套道具形式挂靠在火影模式里。部分玩家已在讨论区确认"蜘蛛侠不会有独立地图，只有手套道具"，引发失望情绪。</div>
+          <div class="feedback-quote">"Spiderman modu ayri bir mod olarak gelebilir" / "off abi gelmesin sadece orumcek adam kyafeti ve eldiveni gelecekse... spider man gelsin ya da hic gelmesin"</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:100%;background:var(--purple);"></div></div>
+            <span class="feedback-count">15 条</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feedback-item demand">
+        <div class="rank-num demand">2</div>
+        <div class="feedback-content">
+          <div class="feedback-title">蜘蛛侠手套皮肤正式回归（旧版高质量版本）</div>
+          <div class="feedback-text">11 条评论明确询问或期待手套皮肤回归，且强调要"真正的蜘蛛侠紧身服"而非"dandik"（廉价/粗糙）的衍生设计。玩家以旧版蜘蛛侠联动皮肤为标准，期待本次超越或至少持平。</div>
+          <div class="feedback-quote">"Abi peki spiderman seti geri geliyor mu" / "keske gercek spiderman kostuumu gelse bunlar hic guzel degil" / "Spider-Man in gercek dar kostuumu gelse daha iyi olurdu"</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:73%;background:var(--purple);"></div></div>
+            <span class="feedback-count">11 条</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feedback-item demand">
+        <div class="rank-num demand">3</div>
+        <div class="feedback-content">
+          <div class="feedback-title">借势新电影节点做联动活动推广</div>
+          <div class="feedback-text">玩家自发关联7月30日新电影与游戏联动，认为时机"恰好踩上"。这是玩家主动给出的外部借势信号，若官方主动对齐电影节点做宣传，预计正向传播效果显著。</div>
+          <div class="feedback-quote">"4:04 Tam Spiderman yeni film zamanina denk geliyor" / "Abi 30 temmuzda orumcek adam yep yeni bir gun filimi cikacak" / "Gokhan abi 31 temmuz da orumcek adam brand new day filmi var"</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:27%;background:var(--purple);"></div></div>
+            <span class="feedback-count">4 条</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feedback-item demand">
+        <div class="rank-num demand">4</div>
+        <div class="feedback-content">
+          <div class="feedback-title">Venom 联动内容搭配蜘蛛侠出现</div>
+          <div class="feedback-text">有玩家期待 Venom 随蜘蛛侠联动一起出现，构成对抗叙事（"venomla spiderman savas yapardi"），体现玩家对 Marvel 宇宙内容联动的广度期待。</div>
+          <div class="feedback-quote">"keske spiderman etkinliginde venom elbiseleride olsaydi venomla spiderman savas yapardi" / "oyy venom mumya istedim"</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:13%;background:var(--purple);"></div></div>
+            <span class="feedback-count">2 条</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 正面反馈 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-badge pos">+ 正面反馈</div>
+      <span class="section-total">共 <strong>9</strong> 条 · 15.8%</span>
+    </div>
+    <div class="feedback-list">
+
+      <div class="feedback-item pos">
+        <div class="rank-num pos">1</div>
+        <div class="feedback-content">
+          <div class="feedback-title">老粉对蜘蛛侠联动再次回归的情感欢迎</div>
+          <div class="feedback-text">有玩家表示从小就喜欢蜘蛛侠，第一次联动就很开心，这次再来同样激动，属于强 IP 情感共鸣，是高付费意愿的信号。</div>
+          <div class="feedback-quote">"Benim en sevdigim kucuklugumden beri Spiderman, ilk geldiginde modu cok sevdim yine geldiginden cok mutluyum" / "Ben spiderman oynuyorum PUBG gelincede super"</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:100%"></div></div>
+            <span class="feedback-count">约 4 条</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feedback-item pos">
+        <div class="rank-num pos">2</div>
+        <div class="feedback-content">
+          <div class="feedback-title">蜘蛛侠对比火影——部分玩家更偏好蜘蛛侠</div>
+          <div class="feedback-text">有玩家明确表示"比起火影更想玩蜘蛛侠"，说明蜘蛛侠在部分玩家群体中有差异化吸引力，可作为细分受众的撬动点。</div>
+          <div class="feedback-quote">"Naruto yerine orumcek adam oynarim daha iyi valla"</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:44%"></div></div>
+            <span class="feedback-count">2 条</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feedback-item pos">
+        <div class="rank-num pos">3</div>
+        <div class="feedback-content">
+          <div class="feedback-title">对电影节点 × 游戏联动时间重合感到兴奋</div>
+          <div class="feedback-text">玩家关注到联动档期与新电影高度重合，表达出"配合得很好"的正面期待，自发形成传播素材。</div>
+          <div class="feedback-quote">"4:04 Tam Spiderman yeni film zamanina denk geliyor"</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:33%"></div></div>
+            <span class="feedback-count">3 条</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 负面反馈 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-badge neg">- 负面反馈</div>
+      <span class="section-total">共 <strong>2</strong> 条 · 3.5%</span>
+    </div>
+    <div class="feedback-list">
+
+      <div class="feedback-item neg">
+        <div class="rank-num neg">1</div>
+        <div class="feedback-content">
+          <div class="feedback-title">新版蜘蛛侠皮肤设计"廉价感"，还原度不如旧版</div>
+          <div class="feedback-text">有玩家明确对比旧版蜘蛛侠联动皮肤，认为新版皮肤设计粗糙（"dandik"），不如旧版还原度高。这是蜘蛛侠侧最核心的负面风险：若皮肤视觉效果不达预期，会被直接拿旧版比较。</div>
+          <div class="feedback-quote">"Abi neden bunun ana seti gelmiyor Spiderman seti hep boyle dandik setler geliyor hic benzmiyor" / "Eski spiderman moduna hic benzemiyo cok sacma oynamazlar bu spiderman modunu cok kotu"</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:100%"></div></div>
+            <span class="feedback-count">1 条</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feedback-item neg">
+        <div class="rank-num neg">2</div>
+        <div class="feedback-content">
+          <div class="feedback-title">游戏机制问题（复活叠加）影响联动体验</div>
+          <div class="feedback-text">1 条评论将蜘蛛侠联动与复活机制问题一并批评，认为 PUBG 正在向"不死模式"滑坡，影响整体联动体验评价。</div>
+          <div class="feedback-quote">"oyuna ekstradan canlanma getirmeye devam edeceklerse olmusuz olacak herkes, 4 canlanma oldu bide pubg cop oluyor"</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:50%"></div></div>
+            <span class="feedback-count">1 条</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 中性反馈 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-badge neu">= 中性反馈</div>
+      <span class="section-total">共 <strong>46</strong> 条 · 80.7%</span>
+    </div>
+    <div class="feedback-list">
+
+      <div class="feedback-item neu">
+        <div class="rank-num neu">1</div>
+        <div class="feedback-content">
+          <div class="feedback-title">蜘蛛侠是独立模式还是仅手套道具——玩家信息混乱</div>
+          <div class="feedback-text">最大类别。大量玩家在讨论"到底有没有蜘蛛侠独立模式"，部分玩家已知晓"只有手套，不是独立模式"并在帮其他人解释，但仍有大量玩家不清楚。信息混乱会抑制期待值，建议官方提前明确说明。</div>
+          <div class="feedback-quote">"O kiz yanlis biliyor abi spider-man modu gelmiyor eldiven geliyor" / "Spiderman modu mu geliyor Naruto modu mu" / "Naruto geliyo spider-man in sadece eldiven"</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:100%"></div></div>
+            <span class="feedback-count">约 20 条</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feedback-item neu">
+        <div class="rank-num neu">2</div>
+        <div class="feedback-content">
+          <div class="feedback-title">询问蜘蛛侠皮肤/套装获取方式</div>
+          <div class="feedback-text">多条评论询问蜘蛛侠相关套装是否会以活动、皮肤商店或道具形式出现，以及是否是限时道具还是永久获取。</div>
+          <div class="feedback-quote">"abi orumcek adam seti gelirmi kirimizi olan mytichteki siyahin digeri" / "abi orumcek seti gelirmi" / "hesapta bi orumcek adam seti vardi aq"</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:60%"></div></div>
+            <span class="feedback-count">约 12 条</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feedback-item neu">
+        <div class="rank-num neu">3</div>
+        <div class="feedback-content">
+          <div class="feedback-title">对 Venom / Spider-Victor 等周边角色的讨论</div>
+          <div class="feedback-text">玩家对蜘蛛侠宇宙内其他角色（Venom、Spider-Victor）表现出兴趣，说明 Marvel 联动的延展空间受认可。</div>
+          <div class="feedback-quote">"oyy venom mumya istedim" / "Spiderman yanlis victormen dogru" / "Spider-Victor"</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:25%"></div></div>
+            <span class="feedback-count">约 5 条</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feedback-item neu">
+        <div class="rank-num neu">4</div>
+        <div class="feedback-content">
+          <div class="feedback-title">蜘蛛侠技能机制讨论（爬墙、蛛网）</div>
+          <div class="feedback-text">有玩家关注到蜘蛛侠手套的爬墙和蛛网技能玩法，并讨论其在游戏中的实际效果，属于功能性期待。</div>
+          <div class="feedback-quote">"20:22 spiderman eldiveni bulursan onunla da duvara tirmanabiliyorsun abi" / "Ag atma yetenegi guzel de spiderman kostuumu gene cop"</div>
+          <div class="feedback-bar">
+            <div class="feedback-bar-track"><div class="feedback-bar-fill" style="width:15%"></div></div>
+            <span class="feedback-count">约 3 条</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 关键洞察 -->
+  <div class="insight-section">
+    <h3>◈ 关键洞察</h3>
+    <div class="insight-list">
+      <div class="insight-item">
+        <span class="insight-dot">▸</span>
+        <span><strong style="color:#c8ccd8;">电影节点是最大的外部势能：</strong>7月30日《蜘蛛侠：全新一日》（Brand New Day）与联动档期高度重合，玩家已自发建立关联。建议联动宣传节奏与电影上映对齐，在电影上映前后集中投放蜘蛛侠相关内容，借电影自然流量放大联动声量。</span>
+      </div>
+      <div class="insight-item">
+        <span class="insight-dot">▸</span>
+        <span><strong style="color:#c8ccd8;">独立模式 vs 手套道具：信息鸿沟需提前填补：</strong>最大的中性话题是玩家对"蜘蛛侠是不是独立模式"的信息混乱（约20条）。玩家期待独立模式，实际只是手套道具——这个落差若在上线时才被感知，会造成体验失落，需提前用官方内容温和降低期待并重塑卖点（突出手套玩法本身的趣味性）。</span>
+      </div>
+      <div class="insight-item">
+        <span class="insight-dot">▸</span>
+        <span><strong style="color:#c8ccd8;">皮肤视觉是口碑成败的核心变量：</strong>蜘蛛侠侧最主要负面来自皮肤还原度低于旧版预期，且玩家会直接拿旧版对比。设计质量若不达标，上线后负面将集中爆发。建议在宣传物料中对皮肤视觉做充分展示，主动建立高质量认知。</span>
+      </div>
+      <div class="insight-item">
+        <span class="insight-dot">▸</span>
+        <span><strong style="color:#c8ccd8;">Venom 是低成本延伸机会：</strong>多条评论自发提到希望 Venom 随蜘蛛侠联动出现，哪怕只是皮肤道具形式也能显著提升联动内容丰富度感知，且蜘蛛侠 vs Venom 的对抗叙事天然契合 PUBG 的对抗玩法。</span>
+      </div>
+      <div class="insight-item">
+        <span class="insight-dot">▸</span>
+        <span><strong style="color:#c8ccd8;">蜘蛛侠在细分人群中有独立粉丝基盘：</strong>有玩家明确表示"比起火影更喜欢蜘蛛侠"，说明 Marvel 粉与动漫粉是两个重叠但不完全相同的受众群，蜘蛛侠内容可以单独触达对火影不感兴趣的玩家群体。</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  PUBG Mobile × 蜘蛛侠 先游3 玩家反馈分析 · 数据来源：PUBG Mobile 社媒评论区（YouTube + TikTok）· 2026年6月
+</div>
+</body>
+</html>
