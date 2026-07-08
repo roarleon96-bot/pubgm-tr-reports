@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PUBG Mobile 4.5 火影模式 — 首日玩家反馈报告</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", sans-serif;
+    background: #0f1117;
+    color: #e2e8f0;
+    line-height: 1.7;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    padding: 48px 40px 36px;
+    border-bottom: 1px solid #2d3748;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(255,107,53,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .header-tag {
+    display: inline-block;
+    background: rgba(255,107,53,0.2);
+    border: 1px solid rgba(255,107,53,0.4);
+    color: #ff6b35;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .header h1 span { color: #ff6b35; }
+  .header-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #94a3b8;
+  }
+  .meta-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #ff6b35;
+  }
+
+  /* Summary bar */
+  .summary-bar {
+    background: #161b27;
+    border-bottom: 1px solid #2d3748;
+    padding: 20px 40px;
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  /* Ratio bar */
+  .ratio-bar {
+    background: #13182380;
+    border-bottom: 1px solid #2d3748;
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .ratio-label {
+    font-size: 11px;
+    color: #4a5568;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+  }
+  .ratio-track {
+    flex: 1;
+    min-width: 200px;
+    height: 10px;
+    background: #2d3748;
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+  }
+  .ratio-seg { height: 100%; }
+  .ratio-pos { background: #22c55e; }
+  .ratio-neg { background: #ef4444; }
+  .ratio-neu { background: #475569; }
+  .ratio-legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .ratio-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: #94a3b8;
+  }
+  .ratio-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+  .dot-pos { background: #22c55e; }
+  .dot-neg { background: #ef4444; }
+  .dot-neu { background: #475569; }
+  .ratio-pct { font-weight: 700; margin-left: 2px; }
+  .summary-stat {
+    text-align: center;
+  }
+  .summary-stat .num {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .summary-stat .label {
+    font-size: 11px;
+    color: #64748b;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .stat-total .num { color: #e2e8f0; }
+  .stat-pos .num { color: #4ade80; }
+  .stat-neg .num { color: #f87171; }
+  .stat-neu .num { color: #94a3b8; }
+  .summary-divider { width: 1px; height: 40px; background: #2d3748; }
+
+  /* Noise banner */
+  .noise-banner {
+    background: rgba(251,191,36,0.08);
+    border: 1px solid rgba(251,191,36,0.2);
+    border-radius: 8px;
+    padding: 12px 18px;
+    margin: 24px 40px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #fbbf24;
+  }
+  .noise-icon { font-size: 16px; }
+
+  /* Main content */
+  .content { padding: 24px 40px 40px; }
+
+  /* Section headers */
+  .section {
+    margin-bottom: 28px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #2d3748;
+  }
+  .section-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .icon-pos { background: rgba(74,222,128,0.12); }
+  .icon-neg { background: rgba(248,113,113,0.12); }
+  .icon-neu { background: rgba(148,163,184,0.1); }
+  .icon-key { background: rgba(167,139,250,0.12); }
+  .section-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: #e2e8f0;
+  }
+  .section-count {
+    margin-left: auto;
+    font-size: 13px;
+    color: #64748b;
+    background: #1e2533;
+    padding: 3px 10px;
+    border-radius: 12px;
+  }
+
+  /* Cards */
+  .cards { display: flex; flex-direction: column; gap: 10px; }
+  .card {
+    background: #1a1f2e;
+    border: 1px solid #2d3748;
+    border-radius: 10px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: #3d4a5c; }
+  .card-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    min-width: 48px;
+  }
+  .card-count {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .count-pos { color: #4ade80; }
+  .count-neg { color: #f87171; }
+  .count-neu { color: #94a3b8; }
+  .card-unit {
+    font-size: 10px;
+    color: #4a5568;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .card-body { flex: 1; }
+  .card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #cbd5e1;
+    margin-bottom: 5px;
+  }
+  .card-desc {
+    font-size: 13px;
+    color: #6b7280;
+    line-height: 1.6;
+  }
+  .card-quotes {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .quote-tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid;
+  }
+  .quote-pos { color: #86efac; border-color: rgba(134,239,172,0.25); background: rgba(134,239,172,0.05); }
+  .quote-neg { color: #fca5a5; border-color: rgba(252,165,165,0.25); background: rgba(252,165,165,0.05); }
+  .quote-neu { color: #94a3b8; border-color: rgba(148,163,184,0.2); background: rgba(148,163,184,0.04); }
+
+  /* Alert card */
+  .alert-card {
+    background: rgba(248,113,113,0.06);
+    border: 1px solid rgba(248,113,113,0.25);
+    border-left: 3px solid #f87171;
+  }
+
+  /* Key insights */
+  .insights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin-top: 8px;
+  }
+  .insight-card {
+    background: #1a1f2e;
+    border: 1px solid #2d3748;
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .insight-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #4a5568;
+    margin-bottom: 6px;
+  }
+  .insight-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: #e2e8f0;
+    line-height: 1.4;
+  }
+  .insight-value.good { color: #4ade80; }
+  .insight-value.warn { color: #fbbf24; }
+  .insight-value.bad { color: #f87171; }
+
+  /* Progress bar (unused, kept for compat) */
+  .prog-bar-wrap { margin-top: 16px; }
+  .prog-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .prog-label { font-size: 13px; color: #94a3b8; width: 120px; flex-shrink: 0; }
+  .prog-track { flex: 1; height: 6px; background: #2d3748; border-radius: 3px; overflow: hidden; }
+  .prog-fill { height: 100%; border-radius: 3px; }
+  .fill-pos { background: linear-gradient(90deg, #4ade80, #22c55e); }
+  .fill-neg { background: linear-gradient(90deg, #f87171, #ef4444); }
+  .fill-neu { background: linear-gradient(90deg, #94a3b8, #64748b); }
+  .prog-num { font-size: 13px; font-weight: 600; width: 40px; text-align: right; }
+
+  /* Footer */
+  .footer {
+    border-top: 1px solid #2d3748;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .footer-left { font-size: 12px; color: #4a5568; }
+  .footer-right { font-size: 12px; color: #4a5568; }
+
+  @media (max-width: 600px) {
+    .header { padding: 28px 20px 24px; }
+    .summary-bar { padding: 16px 20px; gap: 20px; }
+    .noise-banner { margin: 16px 20px 0; }
+    .content { padding: 16px 20px 28px; }
+    .footer { padding: 16px 20px; }
+    .header h1 { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-tag">玩家反馈分析</div>
+  <h1>PUBG Mobile <span>4.5</span> 火影模式<br>首日评论报告</h1>
+  <div class="header-meta">
+    <div class="meta-item"><div class="meta-dot"></div>数据来源：YTB</div>
+    <div class="meta-item"><div class="meta-dot"></div>评论时间：上线后 0–8 小时</div>
+    <div class="meta-item"><div class="meta-dot"></div>受众：土耳其 / 阿塞拜疆 / 土库曼斯坦玩家</div>
+  </div>
+</div>
+
+<div class="summary-bar">
+  <div class="summary-stat stat-total">
+    <div class="num">~80</div>
+    <div class="label">有效评论</div>
+  </div>
+  <div class="summary-divider"></div>
+  <div class="summary-stat stat-pos">
+    <div class="num">28</div>
+    <div class="label">正面</div>
+  </div>
+  <div class="summary-stat stat-neg">
+    <div class="num">22</div>
+    <div class="label">负面</div>
+  </div>
+  <div class="summary-stat stat-neu">
+    <div class="num">30</div>
+    <div class="label">中性</div>
+  </div>
+</div>
+
+<div class="ratio-bar">
+  <div class="ratio-label">情绪占比</div>
+  <div class="ratio-track">
+    <div class="ratio-seg ratio-pos" style="width:35%"></div>
+    <div class="ratio-seg ratio-neg" style="width:27%"></div>
+    <div class="ratio-seg ratio-neu" style="width:38%"></div>
+  </div>
+  <div class="ratio-legend">
+    <div class="ratio-item"><div class="ratio-dot dot-pos"></div>正面<span class="ratio-pct" style="color:#4ade80">35%</span></div>
+    <div class="ratio-item"><div class="ratio-dot dot-neg"></div>负面<span class="ratio-pct" style="color:#f87171">27%</span></div>
+    <div class="ratio-item"><div class="ratio-dot dot-neu"></div>中性<span class="ratio-pct" style="color:#94a3b8">38%</span></div>
+  </div>
+</div>
+
+<div class="noise-banner">
+  <span class="noise-icon">⚠</span>
+  <span>噪音率约 <strong>91%</strong>：已过滤抢楼"ilk"、求UC/账号、生日祝福、频道主刷屏等无效评论，仅保留与游戏内容相关的有效反馈。</span>
+</div>
+
+<div class="content">
+
+  <!-- 正面 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-pos">✓</div>
+      <div class="section-title">正面反馈</div>
+      <div class="section-count">约 28 条</div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-left">
+          <div class="card-count count-pos">12</div>
+          <div class="card-unit">条</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">模式整体设计获好评</div>
+          <div class="card-desc">多位玩家使用强烈正向词汇描述新模式体验，首日情绪明显积极。</div>
+          <div class="card-quotes">
+            <span class="quote-tag quote-pos">"inanılmaz mod"（不可思议的模式）</span>
+            <span class="quote-tag quote-pos">"aşırı detaylı"（超精致）</span>
+            <span class="quote-tag quote-pos">"çok iyi mod"（非常好的模式）</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-left">
+          <div class="card-count count-pos">10</div>
+          <div class="card-unit">条</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">动漫细节还原被自发识别</div>
+          <div class="card-desc">玩家无提示地识别出九尾（Kurama）、水面奔跑、披风象征、须佐能乎等动漫元素，说明IP还原度通过了"自然测试"。</div>
+          <div class="card-quotes">
+            <span class="quote-tag quote-pos">九尾 Kurama 名字被正确叫出</span>
+            <span class="quote-tag quote-pos">水面奔跑机制与动漫对应</span>
+            <span class="quote-tag quote-pos">披风象征意义被感知</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-left">
+          <div class="card-count count-pos">6</div>
+          <div class="card-unit">条</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">技能套组与原作角色对应正确</div>
+          <div class="card-desc">玩家自发完成技能与角色的对应分析，火球术/雷切/瞬身均被准确识别，无明显误读。</div>
+          <div class="card-quotes">
+            <span class="quote-tag quote-pos">火球术 = FireBall Jutsu ✓</span>
+            <span class="quote-tag quote-pos">雷切 = Chidori ✓</span>
+            <span class="quote-tag quote-pos">影分身术被期待</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 负面 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-neg">!</div>
+      <div class="section-title">负面反馈</div>
+      <div class="section-count">约 22 条</div>
+    </div>
+    <div class="cards">
+
+      <div class="card alert-card">
+        <div class="card-left">
+          <div class="card-count count-neg">10</div>
+          <div class="card-unit">条</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">🚨 更新推送不均（最高频问题）</div>
+          <div class="card-desc">大量玩家反映 iOS、Android 部分机型，以及土库曼斯坦、阿塞拜疆等地区未收到更新。首日体验被排除在外，情绪明显焦虑。</div>
+          <div class="card-quotes">
+            <span class="quote-tag quote-neg">"iOS ne zaman gelecek"</span>
+            <span class="quote-tag quote-neg">"Android'e hala gelmedi"</span>
+            <span class="quote-tag quote-neg">土库曼斯坦/阿塞拜疆无法更新</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-left">
+          <div class="card-count count-neg">4</div>
+          <div class="card-unit">条</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">"Free Fire 换皮"批评</div>
+          <div class="card-desc">玩家直接点名该模式曾出现在 Free Fire，认为 PUBG 在借用竞品内容，缺乏原创性。此类批评在先游2阶段已存在，首日仍未消退。</div>
+          <div class="card-quotes">
+            <span class="quote-tag quote-neg">"Bu mod önceden Free Fire'a gelmişdi"</span>
+            <span class="quote-tag quote-neg">"Oyun Free Fire'a dönmüş"</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-left">
+          <div class="card-count count-neg">3</div>
+          <div class="card-unit">条</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">游戏身份漂移批评</div>
+          <div class="card-desc">玩家认为 PUBG 正在失去射击游戏的核心身份，逐渐变成"赛车格斗游戏"。这是持续性的深层不满，非针对单一功能。</div>
+          <div class="card-quotes">
+            <span class="quote-tag quote-neg">"Oyun artık savaş oyunundan çıktı"</span>
+            <span class="quote-tag quote-neg">"pubg pubglikten çıktı"</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-left">
+          <div class="card-count count-neg">3</div>
+          <div class="card-unit">条</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Boss 机制不合理</div>
+          <div class="card-desc">掩护状态下仍受伤、击杀手感与预期不符。Boss 难度随进入人数增加但体验落差明显。</div>
+          <div class="card-quotes">
+            <span class="quote-tag quote-neg">覆盖时仍受伤害逻辑不对</span>
+            <span class="quote-tag quote-neg">击杀手感异常</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-left">
+          <div class="card-count count-neg">2</div>
+          <div class="card-unit">条</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">分身机制差评</div>
+          <div class="card-desc">玩家明确表示分身机制体验差，未给出具体原因，但语气较强烈。</div>
+          <div class="card-quotes">
+            <span class="quote-tag quote-neg">"Klon muhabbeti çok kötü"</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 中性 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-neu">○</div>
+      <div class="section-title">中性反馈 / 内容观察</div>
+      <div class="section-count">约 30 条</div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-left">
+          <div class="card-count count-neu">8</div>
+          <div class="card-unit">条</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">更新时间询问</div>
+          <div class="card-desc">询问几点上线、今天还是明天来，无明确情绪倾向，但说明期待度高、关注度真实。</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-left">
+          <div class="card-count count-neu">7</div>
+          <div class="card-unit">条</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">机制细节自发发现</div>
+          <div class="card-desc">玩家主动记录水面加速奔跑、桥梁外观变化、Boss随人数增强等细节，并与动漫原作做比对，体现深度参与感。</div>
+          <div class="card-quotes">
+            <span class="quote-tag quote-neu">水面奔跑 = 动漫设定</span>
+            <span class="quote-tag quote-neu">桥梁设计变化被注意到</span>
+            <span class="quote-tag quote-neu">Boss强度动态变化</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-left">
+          <div class="card-count count-neu">5</div>
+          <div class="card-unit">条</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Boss 限时挑战活动呼声</div>
+          <div class="card-desc">玩家主动参照法老模式，呼吁举办100人最速击杀Boss记录挑战，说明社区有自组织活动意愿。</div>
+          <div class="card-quotes">
+            <span class="quote-tag quote-neu">参照法老模式经验</span>
+            <span class="quote-tag quote-neu">100人集体击杀期待</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-left">
+          <div class="card-count count-neu">4</div>
+          <div class="card-unit">条</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">历史承诺催促（冰域动画）</div>
+          <div class="card-desc">冰域地图切换动画已承诺一年以上，仍未兑现。新模式上线再次触发玩家提及，累积信任损耗。</div>
+          <div class="card-quotes">
+            <span class="quote-tag quote-neu">"buz diyarı animasyonu 1 yıl oldu"</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-left">
+          <div class="card-count count-neu">4</div>
+          <div class="card-unit">条</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">同期 Ferrari/F1 内容提及</div>
+          <div class="card-desc">同版本 Ferrari 联名内容被部分玩家提及，与火影模式并行讨论，整体反应正向。</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-left">
+          <div class="card-count count-neu">2</div>
+          <div class="card-unit">条</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">复活卡缺失（介于负面与中性之间）</div>
+          <div class="card-desc">玩家指出该模式不含复活卡，与此前部分模式对比，语气略有不满但未强烈反对。</div>
+          <div class="card-quotes">
+            <span class="quote-tag quote-neu">"Yine canlanma kartı olmayan saçma bir mod"</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 核心结论 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-key">◆</div>
+      <div class="section-title">核心结论</div>
+    </div>
+    <div class="insights-grid">
+      <div class="insight-card">
+        <div class="insight-label">整体情绪</div>
+        <div class="insight-value good">正面为主<br><span style="font-size:12px;color:#64748b;font-weight:400">模式内容本身认可度高</span></div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-label">最紧迫问题</div>
+        <div class="insight-value warn">更新分发不均<br><span style="font-size:12px;color:#64748b;font-weight:400">iOS/特定地区用户被排除</span></div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-label">持续性风险</div>
+        <div class="insight-value bad">"Free Fire换皮"未消退<br><span style="font-size:12px;color:#64748b;font-weight:400">游戏身份认同焦虑持续</span></div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-label">意外亮点</div>
+        <div class="insight-value good">IP还原度通过自然测试<br><span style="font-size:12px;color:#64748b;font-weight:400">玩家自发完成动漫细节对应</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-left">数据来源：YTB · 4.5版本上线首日</div>
+  <div class="footer-right">有效样本约 80 条 · 噪音已过滤</div>
+</div>
+
+</body>
+</html>
